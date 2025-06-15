@@ -1,6 +1,6 @@
 
-// Browser-compatible astronomical calculations using SunCalc as fallback
-// Swiss Ephemeris has compatibility issues in browser environments
+// Browser-compatible astronomical calculations using SunCalc
+// Removed Swiss Ephemeris dependency due to native compilation issues
 
 import SunCalc from 'suncalc';
 
@@ -56,36 +56,50 @@ export function calculateAccurateSunrise(date: Date, latitude: number, longitude
   }
 }
 
-// Convert Julian Day to Date
-function julianDayToDate(jd: number): Date {
-  const millisPerDay = 24 * 60 * 60 * 1000;
-  const j1970 = 2440588; // Julian day for 1970-01-01
-  return new Date((jd - j1970) * millisPerDay);
-}
-
-// Browser-compatible planetary position calculation using astronomical formulas
+// Enhanced browser-compatible planetary position calculation using VSOP87-inspired formulas
 export function calculatePlanetPosition(jd: number, planet: number): AccuratePlanetPosition {
   try {
-    // Simplified astronomical calculations for browser compatibility
-    // These are approximations - in a production app, you'd use VSOP87 or similar
     const t = (jd - 2451545.0) / 36525; // Julian centuries since J2000.0
     
     if (planet === 0) { // Sun
-      // Sun's geometric mean longitude
+      // More accurate Sun position using VSOP87 approximation
       const L0 = (280.46646 + 36000.76983 * t + 0.0003032 * t * t) % 360;
+      const M = (357.52911 + 35999.05029 * t - 0.0001537 * t * t) % 360;
+      const C = (1.914602 - 0.004817 * t - 0.000014 * t * t) * Math.sin(M * Math.PI / 180) +
+                (0.019993 - 0.000101 * t) * Math.sin(2 * M * Math.PI / 180) +
+                0.000289 * Math.sin(3 * M * Math.PI / 180);
+      
+      const trueAnomaly = M + C;
+      const trueLongitude = (L0 + C) % 360;
+      
       return {
-        longitude: L0 < 0 ? L0 + 360 : L0,
+        longitude: trueLongitude < 0 ? trueLongitude + 360 : trueLongitude,
         latitude: 0, // Sun's ecliptic latitude is always 0
-        distance: 1.0, // AU
+        distance: 1.000001018 * (1 - 0.01671123 * Math.cos(trueAnomaly * Math.PI / 180)),
         speed: 0.9856 // degrees per day approximately
       };
     } else if (planet === 1) { // Moon
-      // Moon's mean longitude
-      const L = (218.3164477 + 481267.88123421 * t - 0.0015786 * t * t) % 360;
+      // Enhanced Moon position calculation using ELP2000 approximation
+      const L = (218.3164477 + 481267.88123421 * t - 0.0015786 * t * t + t * t * t / 538841 - t * t * t * t / 65194000) % 360;
+      const D = (297.8501921 + 445267.1114034 * t - 0.0018819 * t * t + t * t * t / 545868 - t * t * t * t / 113065000) % 360;
+      const M = (357.5291092 + 35999.0502909 * t - 0.0001536 * t * t + t * t * t / 24490000) % 360;
+      const M_prime = (134.9633964 + 477198.8675055 * t + 0.0087414 * t * t + t * t * t / 69699 - t * t * t * t / 14712000) % 360;
+      
+      // Main periodic terms (simplified ELP2000)
+      const longitude = L + 
+        6.289 * Math.sin(M_prime * Math.PI / 180) +
+        1.274 * Math.sin((2 * D - M_prime) * Math.PI / 180) +
+        0.658 * Math.sin(2 * D * Math.PI / 180) +
+        0.214 * Math.sin(2 * M_prime * Math.PI / 180) +
+        -0.185 * Math.sin(M * Math.PI / 180);
+      
+      const latitude = 5.128 * Math.sin((M_prime + 93.27) * Math.PI / 180) +
+        0.281 * Math.sin((M_prime - 2 * D + 119.75) * Math.PI / 180);
+      
       return {
-        longitude: L < 0 ? L + 360 : L,
-        latitude: 0, // Simplified
-        distance: 60.268, // Earth radii
+        longitude: longitude < 0 ? longitude + 360 : longitude % 360,
+        latitude: latitude,
+        distance: 385000.56 + 20905.355 * Math.cos(M_prime * Math.PI / 180), // km
         speed: 13.176 // degrees per day approximately
       };
     }
