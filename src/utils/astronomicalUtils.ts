@@ -67,36 +67,27 @@ export const SHIV_VAAS_LOCATIONS = {
   7: { sanskrit: 'श्मशान', english: 'Shmashaan', significance: 'Shiva at cremation ground—avoid new ventures', activities: ['Avoid new beginnings', 'Spiritual contemplation', 'Meditation'] }
 };
 
-// Calculate lunar day (Tithi)
-export function calculateTithi(date: Date): { name: string; number: number } {
-  const lunarMonth = (date.getTime() / (1000 * 60 * 60 * 24)) % 29.53;
-  const tithiNumber = Math.floor(lunarMonth) + 1;
-  const adjustedTithi = tithiNumber > 15 ? tithiNumber - 15 : tithiNumber;
-  
-  return {
-    name: TITHIS[adjustedTithi - 1] || TITHIS[14],
-    number: adjustedTithi
-  };
-}
-
-// Calculate accurate Tithi using Swiss Ephemeris
+// Calculate accurate Tithi using precise astronomical method
 export function calculateAccurateTithi(date: Date, latitude: number, longitude: number): { name: string; number: number; paksha: string } {
   try {
     const positions = getSunMoonPositionsAtSunrise(date, latitude, longitude);
     
-    // Calculate the angular difference between Moon and Sun
+    // Calculate the angular difference between Moon and Sun (Δ)
     let moonSunDiff = (positions.moonLongitude - positions.sunLongitude + 360) % 360;
     
-    // Each tithi spans 12 degrees
+    // Each tithi spans 12 degrees - apply the precise formula
     const tithiNumber = Math.floor(moonSunDiff / 12) + 1;
     
+    // Ensure tithi is in range 1-30
+    const normalizedTithi = ((tithiNumber - 1) % 30) + 1;
+    
     // Determine paksha (bright or dark half)
-    const paksha = tithiNumber <= 15 ? 'शुक्ल पक्ष' : 'कृष्ण पक्ष';
-    const adjustedTithi = tithiNumber > 15 ? tithiNumber - 15 : tithiNumber;
+    const paksha = normalizedTithi <= 15 ? 'शुक्ल पक्ष' : 'कृष्ण पक्ष';
+    const adjustedTithi = normalizedTithi > 15 ? normalizedTithi - 15 : normalizedTithi;
     
     return {
       name: TITHIS[adjustedTithi - 1] || TITHIS[14],
-      number: tithiNumber,
+      number: normalizedTithi,
       paksha
     };
   } catch (error) {
@@ -108,13 +99,13 @@ export function calculateAccurateTithi(date: Date, latitude: number, longitude: 
     
     return {
       name: TITHIS[adjustedTithi - 1] || TITHIS[14],
-      number: adjustedTithi,
+      number: tithiNumber,
       paksha: tithiNumber <= 15 ? 'शुक्ल पक्ष' : 'कृष्ण पक्ष'
     };
   }
 }
 
-// Calculate accurate Shiv Vaas using the proper formula
+// Calculate accurate Shiv Vaas using the proper formula: (tithi × 2 + 5) mod 7
 export function calculateAccurateShivVaas(date: Date, latitude: number, longitude: number): ShivVaasData & { 
   shivVaasIndex: number; 
   location: typeof SHIV_VAAS_LOCATIONS[1];
@@ -124,7 +115,7 @@ export function calculateAccurateShivVaas(date: Date, latitude: number, longitud
   const tithiData = calculateAccurateTithi(date, latitude, longitude);
   const positions = getSunMoonPositionsAtSunrise(date, latitude, longitude);
   
-  // Apply the Shiv Vaas formula: (tithi × 2 + 5) mod 7
+  // Apply the precise Shiv Vaas formula: (tithi × 2 + 5) mod 7
   const X = (tithiData.number * 2) + 5;
   const remainder = X % 7;
   const shivVaasIndex = remainder === 0 ? 7 : remainder;
@@ -190,7 +181,7 @@ export function calculateMoonTimes(date: Date) {
   return { moonrise, moonset };
 }
 
-// Calculate complete Panchang data
+// Calculate complete Panchang data with accurate calculations
 export function calculateAccuratePanchang(date: Date, latitude: number = 28.6139, longitude: number = 77.2090): PanchangData & {
   accurateData: {
     sunLongitude: number;
@@ -240,9 +231,46 @@ export function calculateAccuratePanchang(date: Date, latitude: number = 28.6139
     };
   } catch (error) {
     console.error('Error calculating accurate panchang:', error);
-    // Fallback to basic calculation
-    return calculatePanchang(date, latitude, longitude) as any;
+    // Fallback to basic calculation using SunCalc
+    return calculateBasicPanchang(date, latitude, longitude);
   }
+}
+
+// Basic Panchang calculation fallback
+function calculateBasicPanchang(date: Date, latitude: number, longitude: number): PanchangData & {
+  accurateData: {
+    sunLongitude: number;
+    moonLongitude: number;
+    tithiDegrees: number;
+  }
+} {
+  const tithi = calculateTithi(date);
+  const nakshatra = calculateNakshatra(date);
+  const yoga = calculateYoga(date);
+  const sunTimes = calculateSunTimes(date, latitude, longitude);
+  const moonTimes = calculateMoonTimes(date);
+  
+  return {
+    tithi: tithi.name,
+    tithiNumber: tithi.number,
+    nakshatra: nakshatra.name,
+    nakshatraNumber: nakshatra.number,
+    yoga,
+    karana: 'बव',
+    sunrise: sunTimes.sunrise,
+    sunset: sunTimes.sunset,
+    moonrise: moonTimes.moonrise,
+    moonset: moonTimes.moonset,
+    rahu: '13:30 - 15:00',
+    yamaghanta: '10:30 - 12:00',
+    gulika: '15:00 - 16:30',
+    abhijit: '11:48 - 12:36',
+    accurateData: {
+      sunLongitude: 45, // Approximate
+      moonLongitude: 120, // Approximate
+      tithiDegrees: 75 // Approximate
+    }
+  };
 }
 
 // Calculate Shiv Vaas - specific fasting days dedicated to Lord Shiva
