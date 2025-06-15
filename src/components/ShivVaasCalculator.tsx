@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 import { calculateAccuratePanchang, calculateAccurateShivVaas, getShivaPujaTime, type PanchangData } from '@/utils/astronomicalUtils';
 import LocationSearch from './LocationSearch';
 import AppDrawer from './AppDrawer';
+import { validateDate, validateTime, validateCoordinates } from '@/utils/securityUtils';
 
 interface AccurateShivVaasData {
   isShivVaas: boolean;
@@ -76,14 +77,32 @@ const ShivVaasCalculator = () => {
 
   const pujaTime = getShivaPujaTime(currentTime, language);
 
+  // Add input validation for date changes
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const dateValue = e.target.value;
+    if (validateDate(dateValue)) {
+      setSelectedDate(new Date(dateValue));
+    }
+  };
+
+  // Add validation for time input
   const handleTimeChange = (timeString: string) => {
-    if (timeString) {
+    if (timeString && validateTime(timeString)) {
       const [hours, minutes] = timeString.split(':').map(Number);
       const newTime = new Date(selectedDate);
       newTime.setHours(hours, minutes, 0, 0);
       setSpecificTime(newTime);
-    } else {
+    } else if (!timeString) {
       setSpecificTime(null);
+    }
+  };
+
+  // Add validation for location updates
+  const handleLocationSelect = (newLocation: { latitude: number; longitude: number; city: string }) => {
+    if (validateCoordinates(newLocation.latitude, newLocation.longitude)) {
+      setLocation(newLocation);
+    } else {
+      console.error('Invalid coordinates provided:', newLocation);
     }
   };
 
@@ -242,8 +261,10 @@ const ShivVaasCalculator = () => {
             <Input
               type="date"
               value={format(selectedDate, 'yyyy-MM-dd')}
-              onChange={(e) => setSelectedDate(new Date(e.target.value))}
+              onChange={handleDateChange}
               className="mb-4"
+              min="1900-01-01"
+              max="2100-12-31"
             />
             
             {/* Specific Time Option */}
@@ -267,6 +288,8 @@ const ShivVaasCalculator = () => {
                       type="time"
                       onChange={(e) => handleTimeChange(e.target.value)}
                       className="flex-1"
+                      min="00:00"
+                      max="23:59"
                     />
                   </div>
                   {specificTime && (
@@ -291,7 +314,7 @@ const ShivVaasCalculator = () => {
             <div className="space-y-2">
               <Label>{language === 'sanskrit' ? 'शहर' : 'City'}: {location.city}</Label>
               <LocationSearch 
-                onLocationSelect={setLocation}
+                onLocationSelect={handleLocationSelect}
                 language={language}
               />
               <div className="grid grid-cols-2 gap-2 mt-2">

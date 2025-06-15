@@ -2,204 +2,201 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { MapPinIcon, SearchIcon, LoaderIcon } from 'lucide-react';
+import { SearchIcon, MapPinIcon } from 'lucide-react';
+import { sanitizeCityName, validateCoordinates, RateLimiter } from '@/utils/securityUtils';
+
+interface LocationResult {
+  display_name: string;
+  lat: string;
+  lon: string;
+  place_id: number;
+}
 
 interface LocationSearchProps {
   onLocationSelect: (location: { latitude: number; longitude: number; city: string }) => void;
   language: 'sanskrit' | 'english';
 }
 
-interface GeocodingResult {
-  name: string;
-  country: string;
-  state?: string;
-  lat: number;
-  lon: number;
-  display_name: string;
-}
+// Create rate limiter instance
+const searchRateLimiter = new RateLimiter(5, 10000); // 5 requests per 10 seconds
 
 const LocationSearch: React.FC<LocationSearchProps> = ({ onLocationSelect, language }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [suggestions, setSuggestions] = useState<GeocodingResult[]>([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [results, setResults] = useState<LocationResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const debounceRef = useRef<NodeJS.Timeout>();
+  const [showResults, setShowResults] = useState(false);
+  const debounceTimer = useRef<NodeJS.Timeout>();
+
+  const texts = {
+    sanskrit: {
+      placeholder: 'शहर खोजें...',
+      searching: 'खोज रहे हैं...',
+      noResults: 'कोई परिणाम नहीं मिला',
+      rateLimitExceeded: 'बहुत अधिक अनुरोध, कृपया प्रतीक्षा करें',
+      invalidInput: 'अवैध इनपुट'
+    },
+    english: {
+      placeholder: 'Search for a city...',
+      searching: 'Searching...',
+      noResults: 'No results found',
+      rateLimitExceeded: 'Too many requests, please wait',
+      invalidInput: 'Invalid input'
+    }
+  };
+
+  const t = texts[language];
 
   const searchCities = async (query: string) => {
-    if (!query.trim() || query.length < 2) {
-      setSuggestions([]);
+    // Sanitize and validate input
+    const sanitizedQuery = sanitizeCityName(query);
+    if (!sanitizedQuery || sanitizedQuery.length < 2) {
+      setResults([]);
+      return;
+    }
+
+    // Check rate limiting
+    if (!searchRateLimiter.canMakeRequest()) {
+      console.warn('Rate limit exceeded for location search');
+      setResults([]);
+      setIsLoading(false);
       return;
     }
 
     setIsLoading(true);
+    
     try {
-      // Using Nominatim (OpenStreetMap) geocoding service - free and no API key required
+      // Use encodeURIComponent to properly encode the query
+      const encodedQuery = encodeURIComponent(sanitizedQuery);
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=8&addressdetails=1&featuretype=city`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodedQuery}&limit=5&countrycodes=&addressdetails=1`,
+        {
+          headers: {
+            'User-Agent': 'ShivVaasCalculator/1.0.0'
+          }
+        }
       );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
       
-      if (response.ok) {
-        const data = await response.json();
-        const cities = data
-          .filter((item: any) => 
-            item.type === 'city' || 
-            item.type === 'town' || 
-            item.type === 'village' ||
-            item.class === 'place'
-          )
-          .map((item: any) => ({
-            name: item.name || item.display_name.split(',')[0],
-            country: item.address?.country || '',
-            state: item.address?.state || '',
-            lat: parseFloat(item.lat),
-            lon: parseFloat(item.lon),
-            display_name: item.display_name
-          }))
-          .slice(0, 6);
+      // Validate response data
+      if (Array.isArray(data)) {
+        const validResults = data.filter((item: any) => {
+          const lat = parseFloat(item.lat);
+          const lon = parseFloat(item.lon);
+          return (
+            item.display_name && 
+            typeof item.display_name === 'string' &&
+            validateCoordinates(lat, lon) &&
+            item.place_id &&
+            typeof item.place_id === 'number'
+          );
+        });
         
-        setSuggestions(cities);
+        setResults(validResults.slice(0, 5)); // Limit to 5 results
+      } else {
+        setResults([]);
       }
     } catch (error) {
-      console.error('Error fetching city suggestions:', error);
-      setSuggestions([]);
+      console.error('Error searching cities:', error);
+      setResults([]);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    // Debounce search to avoid too many API calls
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
     }
 
-    debounceRef.current = setTimeout(() => {
-      searchCities(searchTerm);
-    }, 300);
+    if (searchTerm.trim()) {
+      debounceTimer.current = setTimeout(() => {
+        searchCities(searchTerm);
+      }, 500);
+    } else {
+      setResults([]);
+    }
 
     return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
       }
     };
   }, [searchTerm]);
 
-  const handleCitySelect = (city: GeocodingResult) => {
-    const cityName = `${city.name}${city.state ? `, ${city.state}` : ''}, ${city.country}`;
-    onLocationSelect({
-      latitude: city.lat,
-      longitude: city.lon,
-      city: cityName
-    });
-    setSearchTerm(cityName);
-    setShowSuggestions(false);
-    setSuggestions([]);
-  };
-
-  const handleLocationDetection = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          onLocationSelect({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            city: language === 'sanskrit' ? 'वर्तमान स्थान' : 'Current Location'
-          });
-          setSearchTerm(language === 'sanskrit' ? 'वर्तमान स्थान' : 'Current Location');
-        },
-        (error) => {
-          console.error('Location detection failed:', error);
-        }
-      );
-    }
-  };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setSearchTerm(value);
-    setShowSuggestions(true);
+    const sanitizedValue = sanitizeCityName(value);
+    setSearchTerm(sanitizedValue);
+    setShowResults(true);
   };
 
-  const handleInputFocus = () => {
-    if (suggestions.length > 0) {
-      setShowSuggestions(true);
+  const handleLocationSelect = (result: LocationResult) => {
+    const lat = parseFloat(result.lat);
+    const lon = parseFloat(result.lon);
+    
+    // Double-check coordinates before using them
+    if (validateCoordinates(lat, lon)) {
+      const cityName = result.display_name.split(',')[0].trim();
+      onLocationSelect({
+        latitude: lat,
+        longitude: lon,
+        city: sanitizeCityName(cityName)
+      });
+      setSearchTerm(cityName);
+      setShowResults(false);
+      setResults([]);
     }
   };
-
-  const handleClickOutside = (e: React.MouseEvent) => {
-    if (!(e.target as Element).closest('.location-search-container')) {
-      setShowSuggestions(false);
-    }
-  };
-
-  useEffect(() => {
-    const handleGlobalClick = () => setShowSuggestions(false);
-    document.addEventListener('click', handleGlobalClick);
-    return () => document.removeEventListener('click', handleGlobalClick);
-  }, []);
 
   return (
-    <div className="relative location-search-container">
+    <div className="relative">
       <div className="flex gap-2">
         <div className="relative flex-1">
-          <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          {isLoading && (
-            <LoaderIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 animate-spin" />
-          )}
+          <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
-            placeholder={language === 'sanskrit' ? 'शहर खोजें (जैसे: नई दिल्ली, न्यूयॉर्क)...' : 'Search city (e.g: New Delhi, New York)...'}
+            type="text"
+            placeholder={t.placeholder}
             value={searchTerm}
             onChange={handleInputChange}
-            onFocus={handleInputFocus}
-            className="pl-10 pr-10"
+            onFocus={() => setShowResults(true)}
+            onBlur={() => setTimeout(() => setShowResults(false), 200)}
+            className="pl-10"
+            maxLength={100}
             autoComplete="off"
           />
-          
-          {showSuggestions && suggestions.length > 0 && (
-            <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto">
-              {suggestions.map((city, index) => (
-                <div
-                  key={index}
-                  className="px-4 py-3 hover:bg-saffron-50 cursor-pointer border-b border-gray-100 last:border-b-0"
-                  onClick={() => handleCitySelect(city)}
-                >
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="font-medium text-gray-900">
-                        {city.name}
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        {city.state && `${city.state}, `}{city.country}
-                      </div>
-                    </div>
-                    <div className="text-xs text-gray-500 ml-2 text-right">
-                      <div>{city.lat.toFixed(3)}</div>
-                      <div>{city.lon.toFixed(3)}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {showSuggestions && searchTerm.length >= 2 && suggestions.length === 0 && !isLoading && (
-            <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
-              <div className="px-4 py-3 text-gray-500 text-sm">
-                {language === 'sanskrit' ? 'कोई शहर नहीं मिला' : 'No cities found'}
-              </div>
-            </div>
-          )}
         </div>
-        
-        <Button 
-          onClick={handleLocationDetection} 
-          variant="outline" 
-          className="px-3"
-          title={language === 'sanskrit' ? 'वर्तमान स्थान का उपयोग करें' : 'Use current location'}
-        >
-          <MapPinIcon className="w-4 h-4" />
-        </Button>
       </div>
+
+      {showResults && (
+        <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+          {isLoading ? (
+            <div className="p-3 text-center text-gray-500">
+              {t.searching}
+            </div>
+          ) : results.length > 0 ? (
+            results.map((result) => (
+              <Button
+                key={result.place_id}
+                variant="ghost"
+                className="w-full justify-start p-3 h-auto text-left hover:bg-gray-50 rounded-none border-b border-gray-100 last:border-b-0"
+                onClick={() => handleLocationSelect(result)}
+              >
+                <MapPinIcon className="w-4 h-4 mr-2 flex-shrink-0 text-gray-400" />
+                <span className="truncate">{result.display_name}</span>
+              </Button>
+            ))
+          ) : searchTerm.trim() && !isLoading ? (
+            <div className="p-3 text-center text-gray-500">
+              {t.noResults}
+            </div>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 };
