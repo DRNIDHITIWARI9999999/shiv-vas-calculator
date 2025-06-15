@@ -22,7 +22,7 @@ const About = () => {
             <ArrowLeftIcon className="w-4 h-4" />
             Back
           </Button>
-          <h1 className="text-2xl font-bold text-gray-800">About Shiv Vaas Calculator</h1>
+          <h1 className="text-2xl font-bold text-blue-800">About Shiv Vaas Calculator</h1>
         </div>
 
         {/* About Content */}
@@ -35,7 +35,7 @@ const About = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-gray-700 leading-relaxed">
+              <p className="text-blue-700 leading-relaxed">
                 Shiv Vaas Calculator is a traditional Hindu astronomical calculator that helps devotees 
                 determine auspicious and inauspicious days according to ancient Vedic traditions. 
                 Our app provides accurate calculations based on astronomical data and traditional formulas.
@@ -44,7 +44,7 @@ const About = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                 <div className="p-4 bg-white rounded-lg border-l-4 border-saffron-400">
                   <h3 className="font-semibold text-saffron-800 mb-2">Features</h3>
-                  <ul className="text-sm text-gray-700 space-y-1">
+                  <ul className="text-sm text-blue-700 space-y-1">
                     <li>• Accurate Shiv Vaas calculations</li>
                     <li>• Detailed Panchang information</li>
                     <li>• Location-based calculations</li>
@@ -55,7 +55,7 @@ const About = () => {
                 
                 <div className="p-4 bg-white rounded-lg border-l-4 border-orange-400">
                   <h3 className="font-semibold text-orange-800 mb-2">Purpose</h3>
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-blue-700">
                     This app is designed to help Hindu devotees plan their religious activities 
                     and ceremonies according to traditional astronomical calculations and Vedic principles.
                   </p>
@@ -72,7 +72,7 @@ const About = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-700 leading-relaxed">
+              <p className="text-blue-700 leading-relaxed">
                 This application is dedicated to Lord Shiva and created with devotion to help 
                 fellow devotees in their spiritual journey. May Lord Shiva bless all users 
                 with peace, prosperity, and spiritual growth.
@@ -90,12 +90,12 @@ const About = () => {
             <CardContent>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="text-gray-600">Version:</p>
-                  <p className="font-semibold">1.0.0</p>
+                  <p className="text-blue-600">Version:</p>
+                  <p className="font-semibold text-blue-800">1.0.0</p>
                 </div>
                 <div>
-                  <p className="text-gray-600">Last Updated:</p>
-                  <p className="font-semibold">December 2024</p>
+                  <p className="text-blue-600">Last Updated:</p>
+                  <p className="font-semibold text-blue-800">December 2024</p>
                 </div>
               </div>
             </CardContent>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -195,8 +196,8 @@ const ShivVaasCalculator = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
             <span className="text-2xl text-white">🕉️</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800">{t.title}</h1>
-          <p className="text-gray-600 text-sm">{t.subtitle}</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-blue-700">{t.title}</h1>
+          <p className="text-blue-600 text-sm">{t.subtitle}</p>
         </div>
         
         <div className="w-16" /> {/* Spacer for centering */}
@@ -235,14 +236,14 @@ const ShivVaasCalculator = () => {
         <CardContent className="p-4">
           <div className="grid grid-cols-2 gap-4 text-center">
             <div>
-              <p className="text-sm text-gray-600">{t.currentTime}</p>
+              <p className="text-sm text-blue-600">{t.currentTime}</p>
               <p className="text-lg font-bold text-orange-800">{format(currentTime, 'HH:mm:ss')}</p>
-              <p className="text-sm text-gray-600">{format(currentTime, 'dd/MM/yyyy')}</p>
+              <p className="text-sm text-blue-600">{format(currentTime, 'dd/MM/yyyy')}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">{t.pujaTime}</p>
+              <p className="text-sm text-blue-600">{t.pujaTime}</p>
               <p className="text-lg font-bold text-orange-800">{pujaTime.time}</p>
-              <p className="text-xs text-gray-600">{pujaTime.significance}</p>
+              <p className="text-xs text-blue-600">{pujaTime.significance}</p>
             </div>
           </div>
         </CardContent>
@@ -279,11 +280,11 @@ const ShivVaasCalculator = () => {
               
               {useSpecificTime && (
                 <div>
-                  <Label className="text-xs text-gray-600 mb-2 block">
+                  <Label className="text-xs text-blue-600 mb-2 block">
                     {t.specificTimeHelper}
                   </Label>
                   <div className="flex items-center gap-2">
-                    <ClockIcon className="w-4 h-4 text-gray-500" />
+                    <ClockIcon className="w-4 h-4 text-blue-500" />
                     <Input
                       type="time"
                       onChange={(e) => handleTimeChange(e.target.value)}
@@ -318,10 +319,10 @@ const ShivVaasCalculator = () => {
                 language={language}
               />
               <div className="grid grid-cols-2 gap-2 mt-2">
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-blue-600">
                   {language === 'sanskrit' ? 'अक्षांश' : 'Latitude'}: {location.latitude.toFixed(4)}
                 </div>
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-blue-600">
                   {language === 'sanskrit' ? 'देशांतर' : 'Longitude'}: {location.longitude.toFixed(4)}
                 </div>
               </div>
@@ -476,7 +477,7 @@ const ShivVaasCalculator = () => {
           <div className="space-y-4 text-center">
             <div className="p-4 bg-white rounded-lg shadow-sm border-l-4 border-saffron-400">
               <h4 className="font-semibold mb-2 text-saffron-800">{t.mahamrityunjaya}</h4>
-              <p className="text-gray-700 text-sm leading-relaxed">
+              <p className="text-blue-700 text-sm leading-relaxed">
                 ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्।<br/>
                 उर्वारुकमिव बन्धनान् मृत्योर्मुक्षीय मामृतात्॥
               </p>
@@ -484,7 +485,7 @@ const ShivVaasCalculator = () => {
             
             <div className="p-4 bg-white rounded-lg shadow-sm border-l-4 border-orange-400">
               <h4 className="font-semibold mb-2 text-orange-800">{t.panchakshar}</h4>
-              <p className="text-gray-700 text-lg font-semibold">
+              <p className="text-blue-700 text-lg font-semibold">
                 ॐ नमः शिवाय
               </p>
             </div>
@@ -493,7 +494,7 @@ const ShivVaasCalculator = () => {
       </Card>
 
       {/* Footer */}
-      <div className="text-center mt-8 text-gray-600 text-sm">
+      <div className="text-center mt-8 text-blue-600 text-sm">
         <p className="text-lg mb-2">{t.footer}</p>
         <p>{t.poweredBy}</p>
       </div>
