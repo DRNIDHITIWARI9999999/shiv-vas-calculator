@@ -1,14 +1,14 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { CalendarIcon, ClockIcon, SunIcon, MoonIcon, StarIcon, InfoIcon, LanguagesIcon, GlobeIcon } from 'lucide-react';
+import { CalendarIcon, ClockIcon, SunIcon, MoonIcon, StarIcon, InfoIcon, LanguagesIcon, GlobeIcon, MenuIcon, ShieldIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { calculateAccuratePanchang, calculateAccurateShivVaas, getShivaPujaTime, type PanchangData } from '@/utils/astronomicalUtils';
 import LocationSearch from './LocationSearch';
+import AppDrawer from './AppDrawer';
 
 interface AccurateShivVaasData {
   isShivVaas: boolean;
@@ -48,6 +48,7 @@ const ShivVaasCalculator = () => {
   const [shivVaasData, setShivVaasData] = useState<AccurateShivVaasData | null>(null);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isCalculating, setIsCalculating] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -104,7 +105,6 @@ const ShivVaasCalculator = () => {
       sunriseTime: 'सूर्योदय काल',
       favorableActivities: 'अनुकूल कार्य',
       avoidActivities: 'बचने योग्य कार्य',
-      formula: 'गणना सूत्र',
       accuratePanchang: 'सटीक पंचांग विवरण',
       tithi: 'तिथि',
       nakshatra: 'नक्षत्र',
@@ -118,7 +118,8 @@ const ShivVaasCalculator = () => {
       mahamrityunjaya: 'महामृत्युंजय मंत्र',
       panchakshar: 'शिव पञ्चाक्षर मंत्र',
       footer: 'हर हर महादेव 🙏',
-      poweredBy: 'सटीक खगोलीय गणना द्वारा संचालित'
+      poweredBy: 'सटीक खगोलीय गणना द्वारा संचालित',
+      menu: 'मेन्यू'
     },
     english: {
       title: 'Shiv Vaas Calculator',
@@ -137,7 +138,6 @@ const ShivVaasCalculator = () => {
       sunriseTime: 'Sunrise Time',
       favorableActivities: 'Favorable Activities',
       avoidActivities: 'Activities to Avoid',
-      formula: 'Calculation Formula',
       accuratePanchang: 'Accurate Panchang Details',
       tithi: 'Tithi',
       nakshatra: 'Nakshatra',
@@ -151,7 +151,8 @@ const ShivVaasCalculator = () => {
       mahamrityunjaya: 'Mahamrityunjaya Mantra',
       panchakshar: 'Shiva Panchakshar Mantra',
       footer: 'Har Har Mahadev 🙏',
-      poweredBy: 'Powered by Accurate Astronomical Calculations'
+      poweredBy: 'Powered by Accurate Astronomical Calculations',
+      menu: 'Menu'
     }
   };
 
@@ -159,17 +160,34 @@ const ShivVaasCalculator = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-saffron-50 via-orange-50 to-red-50 p-4">
-      {/* Header */}
-      <div className="text-center mb-6">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-4 animate-shine">
-          <span className="text-2xl text-white">🕉️</span>
+      {/* Header with Menu */}
+      <div className="flex justify-between items-center mb-6">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setIsDrawerOpen(true)}
+          className="flex items-center gap-2"
+        >
+          <MenuIcon className="w-4 h-4" />
+          {t.menu}
+        </Button>
+        
+        <div className="text-center flex-1">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
+            <span className="text-2xl text-white">🕉️</span>
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800">{t.title}</h1>
+          <p className="text-gray-600 text-sm">{t.subtitle}</p>
         </div>
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">{t.title}</h1>
-        <p className="text-gray-600">{t.subtitle}</p>
-        {isCalculating && (
-          <p className="text-sm text-orange-600 mt-2">{t.calculating}</p>
-        )}
+        
+        <div className="w-16" /> {/* Spacer for centering */}
       </div>
+
+      {isCalculating && (
+        <div className="text-center mb-4">
+          <p className="text-sm text-orange-600">{t.calculating}</p>
+        </div>
+      )}
 
       {/* Language Toggle */}
       <Card className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
@@ -295,7 +313,7 @@ const ShivVaasCalculator = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <span className="text-2xl">🔱</span>
-              {t.shivVaasDetails} - Index: {shivVaasData.shivVaasIndex}
+              {t.shivVaasDetails}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -348,13 +366,6 @@ const ShivVaasCalculator = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
-
-              <div className="bg-purple-50 p-3 rounded-lg">
-                <h4 className="font-semibold mb-2 text-purple-800">{t.formula}:</h4>
-                <p className="text-purple-700 text-sm">
-                  Formula: (तिथि × 2 + 5) mod 7 = ({shivVaasData.tithiDetails.number} × 2 + 5) mod 7 = {shivVaasData.shivVaasIndex}
-                </p>
               </div>
             </div>
           </CardContent>
@@ -418,26 +429,6 @@ const ShivVaasCalculator = () => {
               </div>
             </div>
 
-            {panchangData.accurateData && (
-              <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
-                <h4 className="font-semibold text-gray-800 mb-3">Astronomical Data:</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  <div>
-                    <p className="text-gray-600">Sun Longitude:</p>
-                    <p className="font-mono text-gray-800">{panchangData.accurateData.sunLongitude.toFixed(4)}°</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Moon Longitude:</p>
-                    <p className="font-mono text-gray-800">{panchangData.accurateData.moonLongitude.toFixed(4)}°</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Tithi Degrees:</p>
-                    <p className="font-mono text-gray-800">{panchangData.accurateData.tithiDegrees.toFixed(4)}°</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
             <div className="mt-6 grid grid-cols-2 gap-4">
               <div className="p-3 bg-purple-50 rounded-lg border-l-4 border-purple-400">
                 <h4 className="font-semibold text-purple-800">{t.yamaghanta}</h4>
@@ -483,6 +474,9 @@ const ShivVaasCalculator = () => {
         <p className="text-lg mb-2">{t.footer}</p>
         <p>{t.poweredBy}</p>
       </div>
+
+      {/* App Drawer */}
+      <AppDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} language={language} />
     </div>
   );
 };
