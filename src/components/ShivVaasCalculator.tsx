@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { CalendarIcon, ClockIcon, SunIcon, MoonIcon, StarIcon, InfoIcon, LanguagesIcon, GlobeIcon, MenuIcon, ShieldIcon } from 'lucide-react';
+import { CalendarIcon, ClockIcon, SunIcon, MoonIcon, StarIcon, InfoIcon, LanguagesIcon, GlobeIcon, MenuIcon, ShieldIcon, MapPinIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { calculateAccuratePanchang, calculateAccurateShivVaas, getShivaPujaTime, type PanchangData } from '@/utils/astronomicalUtils';
 import LocationSearch from './LocationSearch';
@@ -51,6 +50,7 @@ const ShivVaasCalculator = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isCalculating, setIsCalculating] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isGettingLocation, setIsGettingLocation] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -107,10 +107,76 @@ const ShivVaasCalculator = () => {
     }
   };
 
+  // Get current location function
+  const getCurrentLocation = () => {
+    setIsGettingLocation(true);
+    
+    if (!navigator.geolocation) {
+      console.error('Geolocation is not supported by this browser');
+      setIsGettingLocation(false);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        
+        if (validateCoordinates(latitude, longitude)) {
+          try {
+            // Try to get city name from coordinates
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`,
+              {
+                headers: {
+                  'User-Agent': 'ShivVaasCalculator/1.0.0'
+                }
+              }
+            );
+            
+            if (response.ok) {
+              const data = await response.json();
+              const cityName = data.address?.city || data.address?.town || data.address?.village || 'Current Location';
+              
+              setLocation({
+                latitude,
+                longitude,
+                city: cityName
+              });
+            } else {
+              // Fallback without city name
+              setLocation({
+                latitude,
+                longitude,
+                city: 'Current Location'
+              });
+            }
+          } catch (error) {
+            console.error('Error getting location name:', error);
+            setLocation({
+              latitude,
+              longitude,
+              city: 'Current Location'
+            });
+          }
+        }
+        setIsGettingLocation(false);
+      },
+      (error) => {
+        console.error('Error getting location:', error);
+        setIsGettingLocation(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000 // 5 minutes
+      }
+    );
+  };
+
   const texts = {
     sanskrit: {
       title: 'शिव वास कैलकुलेटर',
-      subtitle: 'सटीक खगोलीय गणना आधारित',
+      subtitle: '',
       calculating: '🔄 सटीक खगोलीय डेटा की गणना...',
       currentTime: 'वर्तमान समय',
       pujaTime: 'पूजा काल',
@@ -125,7 +191,7 @@ const ShivVaasCalculator = () => {
       sunriseTime: 'सूर्योदय काल',
       favorableActivities: 'अनुकूल कार्य',
       avoidActivities: 'बचने योग्य कार्य',
-      accuratePanchang: 'सटीक पंचांग विवरण',
+      accuratePanchang: 'पंचांग विवरण',
       tithi: 'तिथि',
       nakshatra: 'नक्षत्र',
       yoga: 'योग',
@@ -135,15 +201,17 @@ const ShivVaasCalculator = () => {
       yamaghanta: 'यमघंटा',
       abhijit: 'अभिजित',
       shivaMantras: 'शिव मंत्र',
-      mahamrityunjaya: 'महामृत्युंजय मंत्र',
+      mahamrityunjaya: 'महामृत्युंजy मंत्र',
       panchakshar: 'शिव पञ्चाक्षर मंत्र',
       footer: 'हर हर महादेव 🙏',
       poweredBy: 'सटीक खगोलीय गणना द्वारा संचालित',
-      menu: 'मेन्यू'
+      menu: 'मेन्यू',
+      currentLocation: 'वर्तमान स्थान',
+      gettingLocation: 'स्थान प्राप्त कर रहे हैं...'
     },
     english: {
       title: 'Shiv Vaas Calculator',
-      subtitle: 'Accurate Astronomical Calculations Based',
+      subtitle: '',
       calculating: '🔄 Calculating precise astronomical data...',
       currentTime: 'Current Time',
       pujaTime: 'Puja Time',
@@ -158,7 +226,7 @@ const ShivVaasCalculator = () => {
       sunriseTime: 'Sunrise Time',
       favorableActivities: 'Favorable Activities',
       avoidActivities: 'Activities to Avoid',
-      accuratePanchang: 'Accurate Panchang Details',
+      accuratePanchang: 'Panchang Details',
       tithi: 'Tithi',
       nakshatra: 'Nakshatra',
       yoga: 'Yoga',
@@ -172,7 +240,9 @@ const ShivVaasCalculator = () => {
       panchakshar: 'Shiva Panchakshar Mantra',
       footer: 'Har Har Mahadev 🙏',
       poweredBy: 'Powered by Accurate Astronomical Calculations',
-      menu: 'Menu'
+      menu: 'Menu',
+      currentLocation: 'Current Location',
+      gettingLocation: 'Getting location...'
     }
   };
 
@@ -197,7 +267,7 @@ const ShivVaasCalculator = () => {
             <span className="text-2xl text-white">🕉️</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-blue-700">{t.title}</h1>
-          <p className="text-blue-600 text-sm">{t.subtitle}</p>
+          {t.subtitle && <p className="text-blue-600 text-sm">{t.subtitle}</p>}
         </div>
         
         <div className="w-16" /> {/* Spacer for centering */}
@@ -314,10 +384,24 @@ const ShivVaasCalculator = () => {
           <CardContent>
             <div className="space-y-2">
               <Label>{language === 'sanskrit' ? 'शहर' : 'City'}: {location.city}</Label>
-              <LocationSearch 
-                onLocationSelect={handleLocationSelect}
-                language={language}
-              />
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <LocationSearch 
+                    onLocationSelect={handleLocationSelect}
+                    language={language}
+                  />
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={getCurrentLocation}
+                  disabled={isGettingLocation}
+                  className="flex items-center gap-2 whitespace-nowrap"
+                >
+                  <MapPinIcon className="w-4 h-4" />
+                  {isGettingLocation ? t.gettingLocation : t.currentLocation}
+                </Button>
+              </div>
               <div className="grid grid-cols-2 gap-2 mt-2">
                 <div className="text-xs text-blue-600">
                   {language === 'sanskrit' ? 'अक्षांश' : 'Latitude'}: {location.latitude.toFixed(4)}
