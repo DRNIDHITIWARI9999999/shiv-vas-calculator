@@ -45,8 +45,6 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       shivVaasDetails: 'शिव वास विवरण',
       tithiDetails: 'तिथि विवरण',
       sunriseTime: 'सूर्योदय काल',
-      favorableActivities: 'अनुकूल कार्य',
-      avoidActivities: 'बचने योग्य कार्य',
       tithi: 'तिथि',
       specificTime: 'विशिष्ट समय',
       shastricStatement: 'शास्त्रीय विवरण'
@@ -55,8 +53,6 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       shivVaasDetails: 'Shiv Vaas Details',
       tithiDetails: 'Tithi Details',
       sunriseTime: 'Sunrise Time',
-      favorableActivities: 'Favorable Activities',
-      avoidActivities: 'Activities to Avoid',
       tithi: 'Tithi',
       specificTime: 'Specific Time',
       shastricStatement: 'Scriptural Statement'
@@ -120,7 +116,7 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
             </p>
           </div>
 
-          {/* Shastric Statement Section */}
+          {/* Shastric Statement Section - moved here, just below the abode */}
           <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
             <h4 className="font-semibold mb-2 text-amber-800 flex items-center gap-2">
               <span className="text-lg">📜</span>
@@ -157,19 +153,6 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
                 )}
               </div>
             </div>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-2">
-              {shivVaasData.shivVaasIndex === 7 ? t.avoidActivities : t.favorableActivities}:
-            </h4>
-            <ul className="list-disc list-inside space-y-1">
-              {(language === 'sanskrit' ? shivVaasData.location.activities.sanskrit : shivVaasData.location.activities.english).map((activity, index) => (
-                <li key={index} className={shivVaasData.shivVaasIndex === 7 ? 'text-red-700' : 'text-green-700'}>
-                  {activity}
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </CardContent>

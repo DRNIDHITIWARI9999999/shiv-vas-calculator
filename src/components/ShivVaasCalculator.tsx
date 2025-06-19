@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
@@ -173,14 +172,14 @@ const ShivVaasCalculator = () => {
   const texts = {
     sanskrit: {
       calculating: '🔄 सटीक खगोलीय डेटा की गणना...',
-      footer: 'हर हर महादेव 🙏',
+      footer: '',
       mantras: 'मंत्र',
       panchang: 'पंचांग',
       shivVaas: 'शिव वास'
     },
     english: {
       calculating: '🔄 Calculating precise astronomical data...',
-      footer: 'Har Har Mahadev 🙏',
+      footer: '',
       mantras: 'Mantras',
       panchang: 'Panchang',
       shivVaas: 'Shiv Vaas'
@@ -263,7 +262,6 @@ const ShivVaasCalculator = () => {
       </Tabs>
 
       <div className="text-center mt-8 text-blue-600 text-sm">
-        <p className="text-lg mb-2">{t.footer}</p>
         <p>Powered by The Universe</p>
       </div>
 

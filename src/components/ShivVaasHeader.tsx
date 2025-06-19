@@ -61,7 +61,7 @@ const ShivVaasHeader = ({ onMenuClick, language }: ShivVaasHeaderProps) => {
             <div className="inline-flex flex-col items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
               <span className="text-lg text-white">🕉️</span>
               <p className="text-[8px] text-white sanskrit-text leading-tight px-1">
-                काशी भैरवाय नमः
+                Batuk Bhairavaye Namah
               </p>
             </div>
           </div>
