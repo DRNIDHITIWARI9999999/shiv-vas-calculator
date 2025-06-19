@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { InfoIcon } from 'lucide-react';
+import { InfoIcon, BookOpenIcon, CalculatorIcon } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface AccurateShivVaasData {
@@ -23,6 +23,10 @@ interface AccurateShivVaasData {
       sanskrit: string[];
       english: string[];
     };
+    result: {
+      sanskrit: string;
+      english: string;
+    };
   };
   sunriseTime: Date;
   tithiDetails: {
@@ -30,6 +34,8 @@ interface AccurateShivVaasData {
     number: number;
     paksha: string;
   };
+  formula?: string;
+  traditionalContext?: string;
 }
 
 interface ShivVaasTabProps {
@@ -45,19 +51,23 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       shivVaasDetails: 'शिव वास विवरण',
       tithiDetails: 'तिथि विवरण',
       sunriseTime: 'सूर्योदय काल',
-      favorableActivities: 'अनुकूल कार्य',
-      avoidActivities: 'बचने योग्य कार्य',
+      activities: 'अनुकूल/अनुचित कार्य',
       tithi: 'तिथि',
-      specificTime: 'विशिष्ट समय'
+      specificTime: 'विशिष्ट समय',
+      calculation: 'गणना विधि',
+      traditionalWisdom: 'शास्त्रीय महत्व',
+      result: 'फल'
     },
     english: {
       shivVaasDetails: 'Shiv Vaas Details',
       tithiDetails: 'Tithi Details',
       sunriseTime: 'Sunrise Time',
-      favorableActivities: 'Favorable Activities',
-      avoidActivities: 'Activities to Avoid',
+      activities: 'Recommended/Avoided Activities',
       tithi: 'Tithi',
-      specificTime: 'Specific Time'
+      specificTime: 'Specific Time',
+      calculation: 'Calculation Method',
+      traditionalWisdom: 'Traditional Significance',
+      result: 'Result'
     }
   };
 
@@ -65,8 +75,17 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
 
   if (!shivVaasData) return null;
 
+  // Determine card styling based on auspiciousness
+  const isAuspicious = [1, 2, 3].includes(shivVaasData.shivVaasIndex);
+  const isInauspicious = [4, 5, 6, 7].includes(shivVaasData.shivVaasIndex);
+  
+  const cardStyle = isAuspicious ? 
+    'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200' :
+    isInauspicious ? 'bg-gradient-to-r from-red-50 to-orange-50 border-red-200' :
+    'bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-200';
+
   return (
-    <Card className={`${shivVaasData.shivVaasIndex === 7 ? 'bg-gradient-to-r from-red-50 to-orange-50 border-red-200' : 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'}`}>
+    <Card className={cardStyle}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <span className="text-2xl">🔱</span>
@@ -74,12 +93,60 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className={`text-center p-4 rounded-lg ${shivVaasData.shivVaasIndex === 7 ? 'bg-red-100' : 'bg-green-100'}`}>
-            <h3 className={`text-xl font-bold mb-2 ${shivVaasData.shivVaasIndex === 7 ? 'text-red-800' : 'text-green-800'}`}>
+        <div className="space-y-6">
+          {/* Traditional Context */}
+          {shivVaasData.traditionalContext && (
+            <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+              <h4 className="font-semibold mb-2 flex items-center gap-2 text-blue-800">
+                <BookOpenIcon className="w-4 h-4" />
+                {t.traditionalWisdom}
+              </h4>
+              <p className="text-blue-700 text-sm leading-relaxed">
+                {shivVaasData.traditionalContext}
+              </p>
+            </div>
+          )}
+
+          {/* Calculation Formula */}
+          {shivVaasData.formula && (
+            <div className="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-400">
+              <h4 className="font-semibold mb-2 flex items-center gap-2 text-purple-800">
+                <CalculatorIcon className="w-4 h-4" />
+                {t.calculation}
+              </h4>
+              <p className="text-purple-700 font-mono text-sm">
+                {shivVaasData.formula}
+              </p>
+              <p className="text-purple-600 text-xs mt-1">
+                {language === 'sanskrit' ? 
+                  'तिथिं च द्विगुणी कृत्वा पुनः पञ्च समन्वितम् । सप्तभिस्तुहरेद्भागम शेषं शिव वास उच्यते ।।' :
+                  'Tithi × 2 + 5, divided by 7, remainder indicates Shiv Vaas location'
+                }
+              </p>
+            </div>
+          )}
+
+          {/* Current Shiv Vaas Location */}
+          <div className={`text-center p-6 rounded-lg ${
+            isAuspicious ? 'bg-green-100' : 
+            isInauspicious ? 'bg-red-100' : 'bg-yellow-100'
+          }`}>
+            <h3 className={`text-2xl font-bold mb-2 ${
+              isAuspicious ? 'text-green-800' : 
+              isInauspicious ? 'text-red-800' : 'text-yellow-800'
+            }`}>
               {language === 'sanskrit' ? shivVaasData.location.sanskrit : shivVaasData.location.english}
             </h3>
-            <p className={shivVaasData.shivVaasIndex === 7 ? 'text-red-700' : 'text-green-700'}>
+            <p className={`text-lg font-semibold mb-2 ${
+              isAuspicious ? 'text-green-700' : 
+              isInauspicious ? 'text-red-700' : 'text-yellow-700'
+            }`}>
+              {t.result}: {shivVaasData.location.result[language]}
+            </p>
+            <p className={
+              isAuspicious ? 'text-green-600' : 
+              isInauspicious ? 'text-red-600' : 'text-yellow-600'
+            }>
               {language === 'sanskrit' ? shivVaasData.location.significance.sanskrit : shivVaasData.location.significance.english}
             </p>
           </div>
@@ -114,11 +181,14 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
 
           <div>
             <h4 className="font-semibold mb-2">
-              {shivVaasData.shivVaasIndex === 7 ? t.avoidActivities : t.favorableActivities}:
+              {t.activities}:
             </h4>
             <ul className="list-disc list-inside space-y-1">
               {(language === 'sanskrit' ? shivVaasData.location.activities.sanskrit : shivVaasData.location.activities.english).map((activity, index) => (
-                <li key={index} className={shivVaasData.shivVaasIndex === 7 ? 'text-red-700' : 'text-green-700'}>
+                <li key={index} className={
+                  isAuspicious ? 'text-green-700' : 
+                  isInauspicious ? 'text-red-700' : 'text-yellow-700'
+                }>
                   {activity}
                 </li>
               ))}

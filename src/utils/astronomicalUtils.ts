@@ -1,4 +1,3 @@
-
 import { format, addDays, setHours, setMinutes } from 'date-fns';
 import { getSunMoonPositionsAtSunrise } from './swissEphemeris';
 
@@ -79,90 +78,118 @@ const YOGAS = {
   ]
 };
 
-// Shiv Vaas locations mapping
+// Updated Shiv Vaas locations mapping based on traditional scriptures
 export const SHIV_VAAS_LOCATIONS = {
   1: { 
     sanskrit: 'कैलाश', 
     english: 'Kailash', 
     significance: {
-      sanskrit: 'भगवान शिव कैलाश में—अत्यंत शुभ',
-      english: 'Lord Shiva at Mount Kailash—very auspicious'
+      sanskrit: 'भगवान शिव कैलाश में—सुखदायी, सर्वकार्य सिद्धि',
+      english: 'Lord Shiva at Mount Kailash—brings happiness, success in all endeavors'
     },
     activities: {
-      sanskrit: ['सभी शुभ कार्य', 'आध्यात्मिक साधना', 'नई शुरुआत'],
-      english: ['All auspicious activities', 'Spiritual practices', 'New beginnings']
+      sanskrit: ['संकल्पित शिव पूजा', 'रुद्राभिषेक', 'महामृत्युंजय अनुष्ठान', 'नई शुरुआत', 'सभी शुभ कार्य'],
+      english: ['Sankalpit Shiva Puja', 'Rudrabhishek', 'Mahamrityunjaya rituals', 'New beginnings', 'All auspicious activities']
+    },
+    result: {
+      sanskrit: 'सुखदायी',
+      english: 'Brings happiness'
     }
   },
   2: { 
-    sanskrit: 'गौरी सानिध्य', 
-    english: 'Gauri Sannidhy', 
+    sanskrit: 'गौरी पार्श्व', 
+    english: 'Gauri Parshva', 
     significance: {
-      sanskrit: 'शिव गौरी के साथ—विवाह और पारिवारिक कार्यों के लिए अच्छा',
-      english: 'Shiva with Gauri—good for marriage & family'
+      sanskrit: 'शिव गौरी के साथ—सुख और सम्पदा की प्राप्ति',
+      english: 'Shiva with Gauri—brings happiness and prosperity'
     },
     activities: {
-      sanskrit: ['विवाह समारोह', 'पारिवारिक कार्य', 'रिश्तों के मामले'],
-      english: ['Marriage ceremonies', 'Family functions', 'Relationship matters']
+      sanskrit: ['विवाह संबंधी कार्य', 'धन-संपत्ति के लिए पूजा', 'पारिवारिक सुख के लिए अनुष्ठान'],
+      english: ['Marriage related activities', 'Prayers for wealth', 'Family happiness rituals']
+    },
+    result: {
+      sanskrit: 'सुख और सम्पदा',
+      english: 'Happiness and prosperity'
     }
   },
   3: { 
-    sanskrit: 'वृषभ', 
-    english: 'Vrishabh', 
+    sanskrit: 'वृषारूढ़', 
+    english: 'Vrisharudh', 
     significance: {
-      sanskrit: 'शिव नंदी पर सवार—यात्रा और नए उपक्रमों के लिए अच्छा',
-      english: 'Shiva riding Nandi—good for travel & new ventures'
+      sanskrit: 'शिव नंदी पर सवार—अभीष्ट सिद्धि, मनोकामना पूर्ति',
+      english: 'Shiva riding Nandi—fulfillment of desires, achievement of goals'
     },
     activities: {
-      sanskrit: ['यात्रा', 'नए उपक्रम', 'वाहन खरीदारी'],
-      english: ['Travel', 'New ventures', 'Vehicle purchase']
+      sanskrit: ['अभीष्ट सिद्धि के लिए पूजा', 'मनोकामना पूर्ति हेतु अनुष्ठान', 'विशेष संकल्प पूजा'],
+      english: ['Prayers for desired achievements', 'Wish fulfillment rituals', 'Special sankalpa puja']
+    },
+    result: {
+      sanskrit: 'अभीष्ट सिद्धि',
+      english: 'Fulfillment of desires'
     }
   },
   4: { 
     sanskrit: 'सभा', 
     english: 'Sabha', 
     significance: {
-      sanskrit: 'शिव सभा में—बैठकों और कानूनी मामलों के लिए अच्छा',
-      english: 'Shiva in assembly—good for meetings & legal matters'
+      sanskrit: 'शिव सभा में—संताप, कष्ट, न्यायिक मामलों में देरी',
+      english: 'Shiva in assembly—causes distress, delays in legal matters'
     },
     activities: {
-      sanskrit: ['व्यापारिक बैठकें', 'कानूनी मामले', 'न्यायालयी कार्य'],
-      english: ['Business meetings', 'Legal matters', 'Court cases']
+      sanskrit: ['नए कार्य से बचें', 'केवल नित्य पूजा', 'आपातकालीन पूजा के अतिरिक्त बचें'],
+      english: ['Avoid new ventures', 'Only daily worship', 'Avoid except emergency prayers']
+    },
+    result: {
+      sanskrit: 'संताप',
+      english: 'Distress'
     }
   },
   5: { 
     sanskrit: 'भोजन', 
     english: 'Bhojan', 
     significance: {
-      sanskrit: 'शिव भोजन कर रहे हैं—भोजन संस्कारों के लिए अच्छा',
-      english: 'Shiva having meal—good for food ceremonies'
+      sanskrit: 'शिव भोजन कर रहे हैं—पीड़ादायी, कष्टकारक',
+      english: 'Shiva having meal—causes suffering, troublesome'
     },
     activities: {
-      sanskrit: ['भोजन संस्कार', 'अन्नप्राशन', 'भोज आयोजन'],
-      english: ['Food ceremonies', 'Annaprashan', 'Feast organizing']
+      sanskrit: ['संकल्पित पूजा से बचें', 'सामान्य नित्य पूजा', 'विशेष अनुष्ठान न करें'],
+      english: ['Avoid sankalpit puja', 'Only regular daily worship', 'No special rituals']
+    },
+    result: {
+      sanskrit: 'पीड़ादायी',
+      english: 'Causes suffering'
     }
   },
   6: { 
-    sanskrit: 'क्रीड़ा', 
-    english: 'Krida', 
+    sanskrit: 'क्रीड़ारत', 
+    english: 'Kridarata', 
     significance: {
-      sanskrit: 'शिव खेल में—मनोरंजन और रचनात्मकता के लिए अच्छा',
-      english: 'Shiva at play—good for recreation & creativity'
+      sanskrit: 'शिव खेल में व्यस्त—कष्ट, बाधाएं, असफलता',
+      english: 'Shiva engaged in play—brings troubles, obstacles, failure'
     },
     activities: {
-      sanskrit: ['रचनात्मक कार्य', 'मनोरंजन', 'कला और शिल्प'],
-      english: ['Creative work', 'Recreation', 'Arts and crafts']
+      sanskrit: ['महत्वपूर्ण कार्य से बचें', 'केवल सामान्य पूजा', 'नए उपक्रम न शुरू करें'],
+      english: ['Avoid important work', 'Only general worship', 'Do not start new ventures']
+    },
+    result: {
+      sanskrit: 'कष्ट',
+      english: 'Troubles'
     }
   },
   7: { 
     sanskrit: 'श्मशान', 
     english: 'Shmashaan', 
     significance: {
-      sanskrit: 'शिव श्मशान में—नए उपक्रमों से बचें',
-      english: 'Shiva at cremation ground—avoid new ventures'
+      sanskrit: 'शिव श्मशान में—मृत्यु तुल्य कष्ट, अत्यंत अशुभ',
+      english: 'Shiva at cremation ground—death-like suffering, extremely inauspicious'
     },
     activities: {
-      sanskrit: ['नई शुरुआत से बचें', 'आध्यात्मिक चिंतन', 'ध्यान'],
-      english: ['Avoid new beginnings', 'Spiritual contemplation', 'Meditation']
+      sanskrit: ['कोई भी संकल्पित कार्य न करें', 'केवल आपातकालीन पूजा', 'मृत्युंजय मंत्र जाप'],
+      english: ['No sankalpit activities', 'Only emergency worship', 'Mrityunjaya mantra chanting']
+    },
+    result: {
+      sanskrit: 'मृत्यु',
+      english: 'Death-like suffering'
     }
   }
 };
@@ -253,34 +280,43 @@ export function calculateAccurateTithiAtTime(date: Date, latitude: number, longi
   }
 }
 
-// Calculate accurate Shiv Vaas using the proper formula: (tithi × 2 + 5) mod 7
+// Updated calculateAccurateShivVaas with proper traditional context
 export function calculateAccurateShivVaas(date: Date, latitude: number, longitude: number, language: 'sanskrit' | 'english' = 'sanskrit', specificTime?: Date): ShivVaasData & { 
   shivVaasIndex: number; 
   location: typeof SHIV_VAAS_LOCATIONS[1];
   sunriseTime: Date;
   tithiDetails: { name: string; number: number; paksha: string };
+  formula: string;
+  traditionalContext: string;
 } {
   const tithiData = specificTime ? 
     calculateAccurateTithiAtTime(date, latitude, longitude, specificTime, language) :
     calculateAccurateTithi(date, latitude, longitude, language);
   const positions = getSunMoonPositionsAtSunrise(specificTime || date, latitude, longitude);
   
-  // Apply the precise Shiv Vaas formula: (tithi × 2 + 5) mod 7
+  // Apply Narada's formula: (tithi × 2 + 5) mod 7
+  // तिथिं च द्विगुणी कृत्वा पुनः पञ्च समन्वितम् । सप्तभिस्तुहरेद्भागम शेषं शिव वास उच्यते ।।
   const X = (tithiData.number * 2) + 5;
   const remainder = X % 7;
   const shivVaasIndex = remainder === 0 ? 7 : remainder;
   
   const location = SHIV_VAAS_LOCATIONS[shivVaasIndex as keyof typeof SHIV_VAAS_LOCATIONS];
   
-  // Determine if it's auspicious or not
-  const isAuspicious = shivVaasIndex !== 7; // Shmashaan is not auspicious for new ventures
+  // Traditional context about Shiv Vaas importance
+  const traditionalContext = language === 'sanskrit' ? 
+    'नारद जी द्वारा बताई गई विधि के अनुसार, किसी कार्य विशेष के लिए संकल्पित शिव पूजा, रुद्राभिषेक, महामृत्युंजय अनुष्ठान आदि में शिव वास का विचार करना अत्यंत आवश्यक है।' :
+    'According to the method described by Narada, considering Shiv Vaas is essential before performing sankalpit Shiva puja, Rudrabhishek, Mahamrityunjaya rituals, etc.';
+  
+  const formula = language === 'sanskrit' ?
+    `सूत्र: (${tithiData.number} × 2 + 5) ÷ 7 = शेष ${shivVaasIndex}` :
+    `Formula: (${tithiData.number} × 2 + 5) ÷ 7 = Remainder ${shivVaasIndex}`;
   
   const startTime = positions.sunrise;
   const endTime = addDays(positions.sunrise, 1);
   
   return {
-    isShivVaas: true, // Every day has a Shiv Vaas
-    type: `${location[language]} (${location.english})`,
+    isShivVaas: true,
+    type: `${location[language]} - ${location.result[language]}`,
     startTime,
     endTime,
     significance: location.significance[language],
@@ -288,7 +324,9 @@ export function calculateAccurateShivVaas(date: Date, latitude: number, longitud
     shivVaasIndex,
     location,
     sunriseTime: positions.sunrise,
-    tithiDetails: tithiData
+    tithiDetails: tithiData,
+    formula,
+    traditionalContext
   };
 }
 
