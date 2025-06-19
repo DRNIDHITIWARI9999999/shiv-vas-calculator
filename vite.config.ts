@@ -10,24 +10,20 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     headers: {
-      // Content Security Policy
+      // More permissive Content Security Policy for development
       'Content-Security-Policy': [
-        "default-src 'self'",
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // Required for Vite HMR in dev
+        "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:",
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-        "font-src 'self' https://fonts.gstatic.com",
-        "img-src 'self' data: https:",
-        "connect-src 'self' https://nominatim.openstreetmap.org https://api.openstreetmap.org",
-        "frame-ancestors 'none'",
-        "base-uri 'self'",
-        "form-action 'self'"
+        "font-src 'self' https://fonts.gstatic.com data:",
+        "img-src 'self' data: https: blob:",
+        "connect-src 'self' https://nominatim.openstreetmap.org https://api.openstreetmap.org ws: wss:",
+        "frame-src 'self'",
+        "object-src 'none'"
       ].join('; '),
-      // Additional security headers
-      'X-Frame-Options': 'DENY',
+      // Basic security headers
       'X-Content-Type-Options': 'nosniff',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Permissions-Policy': 'camera=(), microphone=(), geolocation=(self)',
-      'X-XSS-Protection': '1; mode=block'
+      'Referrer-Policy': 'strict-origin-when-cross-origin'
     }
   },
   plugins: [
