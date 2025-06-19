@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { InfoIcon } from 'lucide-react';
 import { format } from 'date-fns';
-
 interface AccurateShivVaasData {
   isShivVaas: boolean;
   type: string;
@@ -30,15 +29,18 @@ interface AccurateShivVaasData {
     paksha: string;
   };
 }
-
 interface ShivVaasTabProps {
   shivVaasData: AccurateShivVaasData | null;
   specificTime: Date | null;
   useSpecificTime: boolean;
   language: 'sanskrit' | 'english';
 }
-
-const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: ShivVaasTabProps) => {
+const ShivVaasTab = ({
+  shivVaasData,
+  specificTime,
+  useSpecificTime,
+  language
+}: ShivVaasTabProps) => {
   const texts = {
     sanskrit: {
       shivVaasDetails: 'शिव वास विवरण',
@@ -46,7 +48,7 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       sunriseTime: 'सूर्योदय काल',
       tithi: 'तिथि',
       specificTime: 'विशिष्ट समय',
-      shastricStatement: 'एकेन वासः कैलाशे द्वितीये गौरी सन्निध्या ।  तृतीये वृषभारुढ़ः सभायां च चतुष्टये । पंचमे भोजने चैव क्रीड़ायां च रसात्मके ।  श्मशाने सप्तशेषे च शिववासः उदीरितः ।।',
+      shastricStatement: 'एकेन वासः कैलाशे द्वितीये गौरी सन्निधौ ।  तृतीये वृषभारुढ़ः सभायां च चतुष्टये । पंचमे भोजने चैव क्रीड़ायां च रसात्मके ।  श्मशाने सप्तशेषे च शिववासः उदीरितः ।।',
       formulaTitle: 'देवर्षि नारद जी द्वारा साझा किए गए सूत्र के अनुसार'
     },
     english: {
@@ -55,7 +57,7 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       sunriseTime: 'Sunrise Time',
       tithi: 'Tithi',
       specificTime: 'Specific Time',
-      shastricStatement: 'एकेन वासः कैलाशे द्वितीये गौरी सन्निध्या ।  तृतीये वृषभारुढ़ः सभायां च चतुष्टये । पंचमे भोजने चैव क्रीड़ायां च रसात्मके ।  श्मशाने सप्तशेषे च शिववासः उदीरितः ।।',
+      shastricStatement: 'एकेन वासः कैलाशे द्वितीये गौरी सन्निधौ ।  तृतीये वृषभारुढ़ः सभायां च चतुष्टये । पंचमे भोजने चैव क्रीड़ायां च रसात्मके ।  श्मशाने सप्तशेषे च शिववासः उदीरितः ।।',
       formulaTitle: 'By applying the formula shared by Devarshi Narad Ji'
     }
   };
@@ -64,42 +66,37 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
   const shastricStatements = {
     1: {
       sanskrit: 'कैलाश वासी शिव का अनुष्ठान करने से सुख प्राप्ति होती है।',
-      english: 'Performing rituals when Lord Shiva resides at Kailash brings happiness and fulfillment.'
+      english: 'Performing rituals when Shiva resides at Kailash brings happiness and fulfillment.'
     },
     2: {
-      sanskrit: 'गौरी-सन्निध्या में रहने पर सुख-सम्पदा की प्राप्ति होती है।',
-      english: 'Performing rituals when Lord Shiva is in the company of Devi Gauri, one attains happiness and prosperity.'
+      sanskrit: 'गौरी-सानिध्य में रहने पर सुख-सम्पदा की प्राप्ति होती है।',
+      english: 'When in the company of Gauri, one attains happiness and prosperity.'
     },
     3: {
       sanskrit: 'वृषारुढ़ शिव की विशेष उपासना से अभीष्ट की सिद्धि होती है।',
-      english: 'Performing rituals when Lord Shiva riding the Nandi bull fulfills desired objectives.'
+      english: 'Special worship of Shiva riding the bull fulfills desired objectives.'
     },
     4: {
       sanskrit: 'सभासद शिव पूजन से संताप होता है।',
-      english: 'Performing rituals when Lord Shiva is in assembly causes distress and suffering.'
+      english: 'Worship of Shiva in assembly causes distress and suffering.'
     },
     5: {
       sanskrit: 'भोजन करते हुए शिव की आराधना पीड़ादायी है।',
-      english: 'Performing rituals when Lord Shiva is having food causes pain and trouble.'
+      english: 'Worship of Shiva while He is eating causes pain and trouble.'
     },
     6: {
       sanskrit: 'क्रीड़ारत शिवाराधन भी कष्टकारी है।',
-      english: 'Performing rituals when Lord Shiva is at play causes difficulties.'
+      english: 'Worship of Shiva while He is at play also causes difficulties.'
     },
     7: {
       sanskrit: 'श्मशानवासी शिवाराधन मरण या मरण तुल्य कष्ट देता है।',
-      english: 'Performing rituals when Lord Shiva is in cremation ground brings death or death-like suffering.'
+      english: 'Worship of Shiva residing in cremation ground brings death or death-like suffering.'
     }
   };
-
   const t = texts[language];
-
   if (!shivVaasData) return null;
-
   const currentStatement = shastricStatements[shivVaasData.shivVaasIndex as keyof typeof shastricStatements];
-
-  return (
-    <Card className={`${shivVaasData.shivVaasIndex === 7 ? 'bg-gradient-to-r from-red-50 to-orange-50 border-red-200' : 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'}`}>
+  return <Card className={`${shivVaasData.shivVaasIndex === 7 ? 'bg-gradient-to-r from-red-50 to-orange-50 border-red-200' : 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'}`}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <span className="text-2xl">🔱</span>
@@ -134,7 +131,7 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
           </div>
 
           {/* Shastric Statement Section - moved here, just below the abode */}
-          <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+          <div className="bg-amber-50 p-4 rounded-lg border border-amber-200 text-center">
             <h4 className="font-semibold mb-2 text-amber-800 flex items-center gap-2">
               <span className="text-lg">📜</span>
               {t.shastricStatement}
@@ -163,18 +160,14 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
                 <p className="text-orange-700">
                   {format(shivVaasData.sunriseTime, 'dd/MM/yyyy HH:mm:ss')}
                 </p>
-                {useSpecificTime && specificTime && (
-                  <p className="text-orange-600 text-sm mt-1">
+                {useSpecificTime && specificTime && <p className="text-orange-600 text-sm mt-1">
                     {t.specificTime}: {format(specificTime, 'dd/MM/yyyy HH:mm')}
-                  </p>
-                )}
+                  </p>}
               </div>
             </div>
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default ShivVaasTab;
