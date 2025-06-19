@@ -47,7 +47,8 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       sunriseTime: 'सूर्योदय काल',
       tithi: 'तिथि',
       specificTime: 'विशिष्ट समय',
-      shastricStatement: 'शास्त्रीय विवरण'
+      shastricStatement: 'शास्त्रीय विवरण',
+      formulaTitle: 'देवर्षि नारद जी द्वारा साझा किए गए सूत्र के अनुसार'
     },
     english: {
       shivVaasDetails: 'Shiv Vaas Details',
@@ -55,7 +56,8 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       sunriseTime: 'Sunrise Time',
       tithi: 'Tithi',
       specificTime: 'Specific Time',
-      shastricStatement: 'Scriptural Statement'
+      shastricStatement: 'Scriptural Statement',
+      formulaTitle: 'By applying the formula shared by Devarshi Narad Ji'
     }
   };
 
@@ -107,6 +109,22 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
+          {/* Formula Section */}
+          <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+            <h4 className="font-semibold mb-3 text-indigo-800 flex items-center gap-2">
+              <span className="text-lg">📖</span>
+              {t.formulaTitle}:
+            </h4>
+            <div className="bg-white p-3 rounded border border-indigo-100 mb-3">
+              <p className="text-indigo-900 font-medium text-center leading-relaxed">
+                "तिथिं च द्विगुणी कृत्वा पुनः पञ्च समन्वितम । सप्तभिस्तुहरेद्भागम शेषं शिव वास उच्यते ।।"
+              </p>
+            </div>
+            <p className="text-indigo-700">
+              Shiv Vaas is, <strong>{shivVaasData.shivVaasIndex}</strong> - {language === 'sanskrit' ? shivVaasData.location.sanskrit : shivVaasData.location.english}
+            </p>
+          </div>
+
           <div className={`text-center p-4 rounded-lg ${shivVaasData.shivVaasIndex === 7 ? 'bg-red-100' : 'bg-green-100'}`}>
             <h3 className={`text-xl font-bold mb-2 ${shivVaasData.shivVaasIndex === 7 ? 'text-red-800' : 'text-green-800'}`}>
               {language === 'sanskrit' ? shivVaasData.location.sanskrit : shivVaasData.location.english}
