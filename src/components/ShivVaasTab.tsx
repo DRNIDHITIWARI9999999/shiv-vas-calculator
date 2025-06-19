@@ -48,7 +48,8 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       favorableActivities: 'अनुकूल कार्य',
       avoidActivities: 'बचने योग्य कार्य',
       tithi: 'तिथि',
-      specificTime: 'विशिष्ट समय'
+      specificTime: 'विशिष्ट समय',
+      shastricStatement: 'शास्त्रीय विवरण'
     },
     english: {
       shivVaasDetails: 'Shiv Vaas Details',
@@ -57,13 +58,48 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       favorableActivities: 'Favorable Activities',
       avoidActivities: 'Activities to Avoid',
       tithi: 'Tithi',
-      specificTime: 'Specific Time'
+      specificTime: 'Specific Time',
+      shastricStatement: 'Scriptural Statement'
+    }
+  };
+
+  // Shastric statements for each Shiv Vaas location
+  const shastricStatements = {
+    1: {
+      sanskrit: 'कैलाश वासी शिव का अनुष्ठान करने से सुख प्राप्ति होती है।',
+      english: 'Performing rituals when Shiva resides at Kailash brings happiness and fulfillment.'
+    },
+    2: {
+      sanskrit: 'गौरी-सानिध्य में रहने पर सुख-सम्पदा की प्राप्ति होती है।',
+      english: 'When in the company of Gauri, one attains happiness and prosperity.'
+    },
+    3: {
+      sanskrit: 'वृषारुढ़ शिव की विशेष उपासना से अभीष्ट की सिद्धि होती है।',
+      english: 'Special worship of Shiva riding the bull fulfills desired objectives.'
+    },
+    4: {
+      sanskrit: 'सभासद शिव पूजन से संताप होता है।',
+      english: 'Worship of Shiva in assembly causes distress and suffering.'
+    },
+    5: {
+      sanskrit: 'भोजन करते हुए शिव की आराधना पीड़ादायी है।',
+      english: 'Worship of Shiva while He is eating causes pain and trouble.'
+    },
+    6: {
+      sanskrit: 'क्रीड़ारत शिवाराधन भी कष्टकारी है।',
+      english: 'Worship of Shiva while He is at play also causes difficulties.'
+    },
+    7: {
+      sanskrit: 'श्मशानवासी शिवाराधन मरण या मरण तुल्य कष्ट देता है।',
+      english: 'Worship of Shiva residing in cremation ground brings death or death-like suffering.'
     }
   };
 
   const t = texts[language];
 
   if (!shivVaasData) return null;
+
+  const currentStatement = shastricStatements[shivVaasData.shivVaasIndex as keyof typeof shastricStatements];
 
   return (
     <Card className={`${shivVaasData.shivVaasIndex === 7 ? 'bg-gradient-to-r from-red-50 to-orange-50 border-red-200' : 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'}`}>
@@ -81,6 +117,17 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
             </h3>
             <p className={shivVaasData.shivVaasIndex === 7 ? 'text-red-700' : 'text-green-700'}>
               {language === 'sanskrit' ? shivVaasData.location.significance.sanskrit : shivVaasData.location.significance.english}
+            </p>
+          </div>
+
+          {/* Shastric Statement Section */}
+          <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+            <h4 className="font-semibold mb-2 text-amber-800 flex items-center gap-2">
+              <span className="text-lg">📜</span>
+              {t.shastricStatement}:
+            </h4>
+            <p className="text-amber-700 italic leading-relaxed">
+              {currentStatement[language]}
             </p>
           </div>
           
