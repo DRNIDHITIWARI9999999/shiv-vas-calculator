@@ -23,7 +23,7 @@ const ShivVaasHeader = ({ onMenuClick, language }: ShivVaasHeaderProps) => {
   const t = texts[language];
 
   return (
-    <div className="flex justify-between items-center mb-6">
+    <div className="flex justify-between items-center mb-4">
       <Button
         variant="outline"
         size="sm"
@@ -35,12 +35,12 @@ const ShivVaasHeader = ({ onMenuClick, language }: ShivVaasHeaderProps) => {
       </Button>
       
       <div className="text-center flex-1">
-        <div className="flex items-center justify-center gap-4 mb-4">
+        <div className="flex items-center justify-center gap-2 mb-3">
           {/* Left Symbol - Om with Ganesha Mantra */}
           <div className="text-center">
-            <div className="inline-flex flex-col items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
+            <div className="inline-flex flex-col items-center justify-center w-20 h-20 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-1 animate-shine">
               <span className="text-lg text-white">🕉️</span>
-              <p className="text-[8px] text-white sanskrit-text leading-tight px-1">
+              <p className="text-[10px] text-white sanskrit-text leading-tight px-1">
                 ॐ गं गणपतये नमः
               </p>
             </div>
@@ -48,9 +48,9 @@ const ShivVaasHeader = ({ onMenuClick, language }: ShivVaasHeaderProps) => {
 
           {/* Center Symbol - Om */}
           <div className="text-center">
-            <div className="inline-flex flex-col items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
+            <div className="inline-flex flex-col items-center justify-center w-20 h-20 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-1 animate-shine">
               <span className="text-lg text-white">🕉️</span>
-              <p className="text-[8px] text-white sanskrit-text leading-tight px-1">
+              <p className="text-[10px] text-white sanskrit-text leading-tight px-1">
                 ॐ नमः शिवाय
               </p>
             </div>
@@ -58,9 +58,9 @@ const ShivVaasHeader = ({ onMenuClick, language }: ShivVaasHeaderProps) => {
 
           {/* Right Symbol - Om with Bhairava Mantra */}
           <div className="text-center">
-            <div className="inline-flex flex-col items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
+            <div className="inline-flex flex-col items-center justify-center w-20 h-20 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-1 animate-shine">
               <span className="text-lg text-white">🕉️</span>
-              <p className="text-[8px] text-white sanskrit-text leading-tight px-1">
+              <p className="text-[10px] text-white sanskrit-text leading-tight px-1">
                 ॐ बटुक भैरवाय नमः
               </p>
             </div>
