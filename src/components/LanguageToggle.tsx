@@ -35,7 +35,7 @@ const LanguageToggle = ({ language, onLanguageChange }: LanguageToggleProps) => 
           </div>
           <div className="flex items-center gap-4 flex-shrink-0">
             <LanguagesIcon className="w-5 h-5 text-blue-600" />
-            <Label className="text-blue-800">{t.language}:</Label>
+            <Label className="text-blue-800">{t.language}</Label>
             <div className="flex items-center gap-2">
               <span className={`text-sm ${language === 'english' ? 'font-bold text-blue-800' : 'text-blue-600'}`}>
                 English
