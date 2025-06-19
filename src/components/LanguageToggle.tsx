@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { LanguagesIcon } from 'lucide-react';
 
@@ -13,11 +12,9 @@ interface LanguageToggleProps {
 const LanguageToggle = ({ language, onLanguageChange }: LanguageToggleProps) => {
   const texts = {
     sanskrit: { 
-      language: 'भाषा',
       narration: 'शिव पूजा, रुद्राभिषेक, या महामृत्युंजय अनुष्ठान जैसे अनुष्ठानों में शिव वास का विचार अत्यधिक महत्वपूर्ण माना जाता है। शास्त्रों के अनुसार, शिव वास उस स्थान को दर्शाता है जहाँ भगवान शिव किसी समय निवास करते हैं और वे क्या कार्य कर रहे हैं, जिससे यह निर्धारित करने में सहायता मिलती है कि वह अवधि आध्यात्मिक/भौतिक रूप से पूजा के लिए उपयुक्त है या नहीं।'
     },
     english: { 
-      language: 'Language',
       narration: 'In rituals such as Shiva Puja, Rudrabhishek, or Mahamrityunjaya Anushthan, considering Shiv Vaas is considered highly important. As per the scriptures, Shiv Vaas reflects the place where Lord Shiva resides at a given time and what he is engaged in, helping determine whether that period is spiritually/materialistically suitable for worship.'
     }
   };
@@ -35,7 +32,6 @@ const LanguageToggle = ({ language, onLanguageChange }: LanguageToggleProps) => 
           </div>
           <div className="flex items-center gap-4 flex-shrink-0">
             <LanguagesIcon className="w-5 h-5 text-blue-600" />
-            <Label className="text-blue-800">{t.language}</Label>
             <div className="flex items-center gap-2">
               <span className={`text-sm ${language === 'english' ? 'font-bold text-blue-800' : 'text-blue-600'}`}>
                 English
