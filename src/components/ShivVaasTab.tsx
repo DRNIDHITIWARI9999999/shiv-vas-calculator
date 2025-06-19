@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { InfoIcon } from 'lucide-react';
@@ -65,31 +64,31 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
   const shastricStatements = {
     1: {
       sanskrit: 'कैलाश वासी शिव का अनुष्ठान करने से सुख प्राप्ति होती है।',
-      english: 'Performing rituals when Shiva resides at Kailash brings happiness and fulfillment.'
+      english: 'Performing rituals when Lord Shiva resides at Kailash brings happiness and fulfillment.'
     },
     2: {
       sanskrit: 'गौरी-सानिध्य में रहने पर सुख-सम्पदा की प्राप्ति होती है।',
-      english: 'When in the company of Gauri, one attains happiness and prosperity.'
+      english: 'Performing rituals when Lord Shiva is in the company of Devi Gauri, one attains happiness and prosperity.'
     },
     3: {
       sanskrit: 'वृषारुढ़ शिव की विशेष उपासना से अभीष्ट की सिद्धि होती है।',
-      english: 'Special worship of Shiva riding the bull fulfills desired objectives.'
+      english: 'Performing rituals when Lord Shiva riding the Nandi bull fulfills desired objectives.'
     },
     4: {
       sanskrit: 'सभासद शिव पूजन से संताप होता है।',
-      english: 'Worship of Shiva in assembly causes distress and suffering.'
+      english: 'Performing rituals when Lord Shiva is in assembly causes distress and suffering.'
     },
     5: {
       sanskrit: 'भोजन करते हुए शिव की आराधना पीड़ादायी है।',
-      english: 'Worship of Shiva while He is eating causes pain and trouble.'
+      english: 'Performing rituals when Lord Shiva is having food causes pain and trouble.'
     },
     6: {
       sanskrit: 'क्रीड़ारत शिवाराधन भी कष्टकारी है।',
-      english: 'Worship of Shiva while He is at play also causes difficulties.'
+      english: 'Performing rituals when Lord Shiva is at play causes difficulties.'
     },
     7: {
       sanskrit: 'श्मशानवासी शिवाराधन मरण या मरण तुल्य कष्ट देता है।',
-      english: 'Worship of Shiva residing in cremation ground brings death or death-like suffering.'
+      english: 'Performing rituals when Lord Shiva is in cremation ground brings death or death-like suffering.'
     }
   };
 
