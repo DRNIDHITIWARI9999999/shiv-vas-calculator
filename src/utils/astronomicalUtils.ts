@@ -95,7 +95,7 @@ export const SHIV_VAAS_LOCATIONS = {
   },
   2: { 
     sanskrit: 'गौरी सानिध्य', 
-    english: 'Gauri Sannidhy', 
+    english: 'Gauri Sannidhya', 
     significance: {
       sanskrit: 'शिव गौरी के साथ—विवाह और पारिवारिक कार्यों के लिए अच्छा',
       english: 'Shiva with Gauri—good for marriage & family'
