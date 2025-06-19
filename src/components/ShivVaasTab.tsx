@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { InfoIcon } from 'lucide-react';
 import { format } from 'date-fns';
+
 interface AccurateShivVaasData {
   isShivVaas: boolean;
   type: string;
@@ -29,18 +31,15 @@ interface AccurateShivVaasData {
     paksha: string;
   };
 }
+
 interface ShivVaasTabProps {
   shivVaasData: AccurateShivVaasData | null;
   specificTime: Date | null;
   useSpecificTime: boolean;
   language: 'sanskrit' | 'english';
 }
-const ShivVaasTab = ({
-  shivVaasData,
-  specificTime,
-  useSpecificTime,
-  language
-}: ShivVaasTabProps) => {
+
+const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: ShivVaasTabProps) => {
   const texts = {
     sanskrit: {
       shivVaasDetails: 'शिव वास विवरण',
@@ -48,7 +47,8 @@ const ShivVaasTab = ({
       sunriseTime: 'सूर्योदय काल',
       tithi: 'तिथि',
       specificTime: 'विशिष्ट समय',
-      shastricStatement: 'शास्त्रीय विवरण'
+      shastricStatement: 'शास्त्रीय विवरण',
+      formulaTitle: 'देवर्षि नारद जी द्वारा साझा किए गए सूत्र के अनुसार'
     },
     english: {
       shivVaasDetails: 'Shiv Vaas Details',
@@ -56,7 +56,8 @@ const ShivVaasTab = ({
       sunriseTime: 'Sunrise Time',
       tithi: 'Tithi',
       specificTime: 'Specific Time',
-      shastricStatement: 'Scriptural Statement'
+      shastricStatement: 'Scriptural Statement',
+      formulaTitle: 'By applying the formula shared by Devarshi Narad Ji'
     }
   };
 
@@ -91,10 +92,15 @@ const ShivVaasTab = ({
       english: 'Worship of Shiva residing in cremation ground brings death or death-like suffering.'
     }
   };
+
   const t = texts[language];
+
   if (!shivVaasData) return null;
+
   const currentStatement = shastricStatements[shivVaasData.shivVaasIndex as keyof typeof shastricStatements];
-  return <Card className={`${shivVaasData.shivVaasIndex === 7 ? 'bg-gradient-to-r from-red-50 to-orange-50 border-red-200' : 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'}`}>
+
+  return (
+    <Card className={`${shivVaasData.shivVaasIndex === 7 ? 'bg-gradient-to-r from-red-50 to-orange-50 border-red-200' : 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'}`}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <span className="text-2xl">🔱</span>
@@ -103,8 +109,24 @@ const ShivVaasTab = ({
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
+          {/* Formula Section */}
+          <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+            <h4 className="font-semibold mb-3 text-indigo-800 flex items-center gap-2">
+              <span className="text-lg">📖</span>
+              {t.formulaTitle}:
+            </h4>
+            <div className="bg-white p-3 rounded border border-indigo-100 mb-3">
+              <p className="text-indigo-900 font-medium text-center leading-relaxed">
+                "तिथिं च द्विगुणी कृत्वा पुनः पञ्च समन्वितम । सप्तभिस्तुहरेद्भागम शेषं शिव वास उच्यते ।।"
+              </p>
+            </div>
+            <p className="text-indigo-700">
+              Shiv Vaas is, <strong>{shivVaasData.shivVaasIndex}</strong> - {language === 'sanskrit' ? shivVaasData.location.sanskrit : shivVaasData.location.english}
+            </p>
+          </div>
+
           <div className={`text-center p-4 rounded-lg ${shivVaasData.shivVaasIndex === 7 ? 'bg-red-100' : 'bg-green-100'}`}>
-            <h3 className="">
+            <h3 className={`text-xl font-bold mb-2 ${shivVaasData.shivVaasIndex === 7 ? 'text-red-800' : 'text-green-800'}`}>
               {language === 'sanskrit' ? shivVaasData.location.sanskrit : shivVaasData.location.english}
             </h3>
             <p className={shivVaasData.shivVaasIndex === 7 ? 'text-red-700' : 'text-green-700'}>
@@ -142,14 +164,18 @@ const ShivVaasTab = ({
                 <p className="text-orange-700">
                   {format(shivVaasData.sunriseTime, 'dd/MM/yyyy HH:mm:ss')}
                 </p>
-                {useSpecificTime && specificTime && <p className="text-orange-600 text-sm mt-1">
+                {useSpecificTime && specificTime && (
+                  <p className="text-orange-600 text-sm mt-1">
                     {t.specificTime}: {format(specificTime, 'dd/MM/yyyy HH:mm')}
-                  </p>}
+                  </p>
+                )}
               </div>
             </div>
           </div>
         </div>
       </CardContent>
-    </Card>;
+    </Card>
+  );
 };
+
 export default ShivVaasTab;
