@@ -33,10 +33,6 @@ interface AccurateShivVaasData {
       sanskrit: string[];
       english: string[];
     };
-    result: {
-      sanskrit: string;
-      english: string;
-    };
   };
   sunriseTime: Date;
   tithiDetails: {
@@ -44,8 +40,6 @@ interface AccurateShivVaasData {
     number: number;
     paksha: string;
   };
-  formula?: string;
-  traditionalContext?: string;
 }
 
 const ShivVaasCalculator = () => {
