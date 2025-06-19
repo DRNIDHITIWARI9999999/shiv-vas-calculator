@@ -1,6 +1,5 @@
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { SecurityMonitor } from '@/utils/securityUtils';
 
 interface Props {
   children: ReactNode;
@@ -12,8 +11,6 @@ interface State {
 }
 
 class SecurityErrorBoundary extends Component<Props, State> {
-  private securityMonitor = SecurityMonitor.getInstance();
-
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false };
@@ -24,15 +21,21 @@ class SecurityErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Log security-related errors
-    this.securityMonitor.logSecurityEvent('component_error', {
-      error: error.message,
-      stack: error.stack,
-      componentStack: errorInfo.componentStack,
-      timestamp: new Date().toISOString()
-    });
-
+    // Log security-related errors to console
     console.error('Security Error Boundary caught an error:', error, errorInfo);
+    
+    // Store error info in localStorage for debugging
+    try {
+      const errorLog = {
+        error: error.message,
+        stack: error.stack,
+        componentStack: errorInfo.componentStack,
+        timestamp: new Date().toISOString()
+      };
+      localStorage.setItem('last_security_error', JSON.stringify(errorLog));
+    } catch (storageError) {
+      console.warn('Failed to store error log:', storageError);
+    }
   }
 
   render() {
