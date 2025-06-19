@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { InfoIcon } from 'lucide-react';
@@ -46,7 +47,7 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       sunriseTime: 'सूर्योदय काल',
       tithi: 'तिथि',
       specificTime: 'विशिष्ट समय',
-      shastricStatement: 'एकेन वासः कैलाशे द्वितीये गौरी सन्निध्या ।  तृतीये वृषभारुढ़ः सभायां च चतुष्टये । पंचमे भोजने चैव क्रीड़ायां च रसात्मके ।  श्मशाने सप्तशेषे च शिववासः उदीरितः ।।',
+      shastricStatement: 'एकेन वासः कैलाशे द्वितीये गौरी सन्निधौ ।  तृतीये वृषभारुढ़ः सभायां च चतुष्टये । पंचमे भोजने चैव क्रीड़ायां च रसात्मके ।  श्मशाने सप्तशेषे च शिववासः उदीरितः ।।',
       formulaTitle: 'देवर्षि नारद जी द्वारा साझा किए गए सूत्र के अनुसार'
     },
     english: {
@@ -55,7 +56,7 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       sunriseTime: 'Sunrise Time',
       tithi: 'Tithi',
       specificTime: 'Specific Time',
-      shastricStatement: 'एकेन वासः कैलाशे द्वितीये गौरी सन्निध्या ।  तृतीये वृषभारुढ़ः सभायां च चतुष्टये । पंचमे भोजने चैव क्रीड़ायां च रसात्मके ।  श्मशाने सप्तशेषे च शिववासः उदीरितः ।।',
+      shastricStatement: 'एकेन वासः कैलाशे द्वितीये गौरी सन्निधौ ।  तृतीये वृषभारुढ़ः सभायां च चतुष्टये । पंचमे भोजने चैव क्रीड़ायां च रसात्मके ।  श्मशाने सप्तशेषे च शिववासः उदीरितः ।।',
       formulaTitle: 'By applying the formula shared by Devarshi Narad Ji'
     }
   };
