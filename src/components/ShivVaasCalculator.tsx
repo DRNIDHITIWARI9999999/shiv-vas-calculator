@@ -610,7 +610,7 @@ const ShivVaasCalculator = () => {
       {/* Footer */}
       <div className="text-center mt-8 text-blue-600 text-sm">
         <p className="text-lg mb-2">{t.footer}</p>
-        <p>{t.poweredBy}</p>
+        <p>Powered by The Universe</p>
       </div>
 
       {/* App Drawer */}
