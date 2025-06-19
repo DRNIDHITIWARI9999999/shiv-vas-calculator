@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { InfoIcon } from 'lucide-react';
@@ -124,16 +125,7 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
             </p>
           </div>
 
-          <div className={`text-center p-4 rounded-lg ${shivVaasData.shivVaasIndex === 7 ? 'bg-red-100' : 'bg-green-100'}`}>
-            <h3 className={`text-xl font-bold mb-2 ${shivVaasData.shivVaasIndex === 7 ? 'text-red-800' : 'text-green-800'}`}>
-              {language === 'sanskrit' ? shivVaasData.location.sanskrit : shivVaasData.location.english}
-            </h3>
-            <p className={shivVaasData.shivVaasIndex === 7 ? 'text-red-700' : 'text-green-700'}>
-              {language === 'sanskrit' ? shivVaasData.location.significance.sanskrit : shivVaasData.location.significance.english}
-            </p>
-          </div>
-
-          {/* Shastric Statement Section - moved here, just below the abode */}
+          {/* Shastric Statement Section - moved here, just below the formula */}
           <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
             <h4 className="font-semibold mb-2 text-amber-800 flex items-center gap-2">
               <span className="text-lg">📜</span>
