@@ -132,7 +132,7 @@ const ShivVaasTab = ({
 
           {/* Shastric Statement Section - moved here, just below the abode */}
           <div className="bg-amber-50 p-4 rounded-lg border border-amber-200 text-center">
-            <h4 className="font-semibold mb-2 text-amber-800 flex items-center gap-2">
+            <h4 className="font-semibold mb-2 text-amber-800 flex items-center gap-2 text-center">
               <span className="text-lg">📜</span>
               {t.shastricStatement}
             </h4>
