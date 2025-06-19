@@ -265,10 +265,10 @@ const ShivVaasCalculator = () => {
         
         <div className="text-center flex-1">
           <div className="flex items-center justify-center gap-4 mb-4">
-            {/* Left Symbol - Ganesha */}
+            {/* Left Symbol - Om with Ganesha Mantra */}
             <div className="text-center">
               <div className="inline-flex flex-col items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
-                <span className="text-lg text-white">🐘</span>
+                <span className="text-lg text-white">🕉️</span>
                 <p className="text-[8px] text-white sanskrit-text leading-tight px-1">
                   ॐ गं गणपतये नमः
                 </p>
@@ -285,10 +285,10 @@ const ShivVaasCalculator = () => {
               </div>
             </div>
 
-            {/* Right Symbol - Bhairava */}
+            {/* Right Symbol - Om with Bhairava Mantra */}
             <div className="text-center">
               <div className="inline-flex flex-col items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
-                <span className="text-lg text-white">🔱</span>
+                <span className="text-lg text-white">🕉️</span>
                 <p className="text-[8px] text-white sanskrit-text leading-tight px-1">
                   काशी भैरवाय नमः
                 </p>
