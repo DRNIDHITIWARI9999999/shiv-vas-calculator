@@ -267,29 +267,32 @@ const ShivVaasCalculator = () => {
           <div className="flex items-center justify-center gap-4 mb-4">
             {/* Left Symbol - Ganesha */}
             <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
-                <span className="text-2xl text-white">🐘</span>
+              <div className="inline-flex flex-col items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
+                <span className="text-lg text-white">🐘</span>
+                <p className="text-[8px] text-white sanskrit-text leading-tight px-1">
+                  ॐ गं गणपतये नमः
+                </p>
               </div>
-              <p className="text-xs text-blue-600 sanskrit-text leading-tight">
-                ॐ गं गणपतये नमः
-              </p>
             </div>
 
             {/* Center Symbol - Om */}
             <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
-                <span className="text-2xl text-white">🕉️</span>
+              <div className="inline-flex flex-col items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
+                <span className="text-lg text-white">🕉️</span>
+                <p className="text-[8px] text-white sanskrit-text leading-tight px-1">
+                  ॐ नमः शिवाय
+                </p>
               </div>
             </div>
 
             {/* Right Symbol - Bhairava */}
             <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
-                <span className="text-2xl text-white">🔱</span>
+              <div className="inline-flex flex-col items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
+                <span className="text-lg text-white">🔱</span>
+                <p className="text-[8px] text-white sanskrit-text leading-tight px-1">
+                  काशी भैरवाय नमः
+                </p>
               </div>
-              <p className="text-xs text-blue-600 sanskrit-text leading-tight">
-                काशी भैरवाय नमः
-              </p>
             </div>
           </div>
           
