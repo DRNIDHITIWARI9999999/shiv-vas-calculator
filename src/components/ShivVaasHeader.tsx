@@ -40,7 +40,7 @@ const ShivVaasHeader = ({ onMenuClick, language }: ShivVaasHeaderProps) => {
           <div className="text-center">
             <div className="inline-flex flex-col items-center justify-center w-20 h-20 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-1 animate-shine">
               <span className="text-lg text-white">🕉️</span>
-              <p className="text-[10px] text-white sanskrit-text leading-tight px-1">
+              <p className="text-[8px] text-white sanskrit-text leading-tight px-1">
                 ॐ गं गणपतये नमः
               </p>
             </div>
@@ -50,7 +50,7 @@ const ShivVaasHeader = ({ onMenuClick, language }: ShivVaasHeaderProps) => {
           <div className="text-center">
             <div className="inline-flex flex-col items-center justify-center w-20 h-20 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-1 animate-shine">
               <span className="text-lg text-white">🕉️</span>
-              <p className="text-[10px] text-white sanskrit-text leading-tight px-1">
+              <p className="text-[8px] text-white sanskrit-text leading-tight px-1">
                 ॐ नमः शिवाय
               </p>
             </div>
@@ -60,7 +60,7 @@ const ShivVaasHeader = ({ onMenuClick, language }: ShivVaasHeaderProps) => {
           <div className="text-center">
             <div className="inline-flex flex-col items-center justify-center w-20 h-20 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-1 animate-shine">
               <span className="text-lg text-white">🕉️</span>
-              <p className="text-[10px] text-white sanskrit-text leading-tight px-1">
+              <p className="text-[8px] text-white sanskrit-text leading-tight px-1">
                 ॐ बटुक भैरवाय नमः
               </p>
             </div>
