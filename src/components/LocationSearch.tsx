@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SearchIcon, MapPinIcon } from 'lucide-react';
-import { sanitizeCityName, validateCoordinates, RateLimiter } from '@/utils/securityUtils';
+import { sanitizeCityName, validateCoordinates, RateLimiter, SecurityMonitor, sanitizeApiInput } from '@/utils/securityUtils';
 
 interface LocationResult {
   display_name: string;
@@ -17,15 +16,17 @@ interface LocationSearchProps {
   language: 'sanskrit' | 'english';
 }
 
-// Create rate limiter instance
-const searchRateLimiter = new RateLimiter(5, 10000); // 5 requests per 10 seconds
+// Create enhanced rate limiter instance with identifier
+const searchRateLimiter = new RateLimiter('location_search', 5, 10000); // 5 requests per 10 seconds
 
 const LocationSearch: React.FC<LocationSearchProps> = ({ onLocationSelect, language }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState<LocationResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [rateLimitMessage, setRateLimitMessage] = useState('');
   const debounceTimer = useRef<NodeJS.Timeout>();
+  const securityMonitor = SecurityMonitor.getInstance();
 
   const texts = {
     sanskrit: {
@@ -56,17 +57,31 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onLocationSelect, langu
 
     // Check rate limiting
     if (!searchRateLimiter.canMakeRequest()) {
-      console.warn('Rate limit exceeded for location search');
+      const resetTime = Math.ceil(searchRateLimiter.getResetTime() / 1000);
+      setRateLimitMessage(`${t.rateLimitExceeded} (${resetTime}s)`);
+      
+      securityMonitor.logSecurityEvent('rate_limit_exceeded', {
+        endpoint: 'location_search',
+        query: sanitizedQuery,
+        remainingCalls: searchRateLimiter.getRemainingCalls()
+      });
+      
       setResults([]);
       setIsLoading(false);
+      
+      // Clear rate limit message after delay
+      setTimeout(() => setRateLimitMessage(''), resetTime * 1000);
       return;
     }
 
+    setRateLimitMessage('');
     setIsLoading(true);
     
     try {
-      // Use encodeURIComponent to properly encode the query
-      const encodedQuery = encodeURIComponent(sanitizedQuery);
+      // Sanitize the input before encoding
+      const cleanInput = sanitizeApiInput(sanitizedQuery);
+      const encodedQuery = encodeURIComponent(cleanInput);
+      
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodedQuery}&limit=5&countrycodes=&addressdetails=1`,
         {
@@ -97,12 +112,24 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onLocationSelect, langu
         });
         
         setResults(validResults.slice(0, 5)); // Limit to 5 results
+        
+        securityMonitor.logSecurityEvent('api_request_success', {
+          endpoint: 'nominatim_search',
+          resultCount: validResults.length,
+          query: cleanInput
+        });
       } else {
         setResults([]);
       }
     } catch (error) {
       console.error('Error searching cities:', error);
       setResults([]);
+      
+      securityMonitor.logSecurityEvent('api_request_error', {
+        endpoint: 'nominatim_search',
+        error: error instanceof Error ? error.message : 'Unknown error',
+        query: sanitizedQuery
+      });
     } finally {
       setIsLoading(false);
     }
@@ -119,6 +146,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onLocationSelect, langu
       }, 500);
     } else {
       setResults([]);
+      setRateLimitMessage('');
     }
 
     return () => {
@@ -150,6 +178,12 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onLocationSelect, langu
       setSearchTerm(cityName);
       setShowResults(false);
       setResults([]);
+      setRateLimitMessage('');
+      
+      securityMonitor.logSecurityEvent('location_selected', {
+        city: cityName,
+        coordinates: { lat, lon }
+      });
     }
   };
 
@@ -172,7 +206,13 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onLocationSelect, langu
         </div>
       </div>
 
-      {showResults && (
+      {rateLimitMessage && (
+        <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-red-50 border border-red-200 rounded-lg p-3 text-center text-red-600 text-sm">
+          {rateLimitMessage}
+        </div>
+      )}
+
+      {showResults && !rateLimitMessage && (
         <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
           {isLoading ? (
             <div className="p-3 text-center text-gray-500">
