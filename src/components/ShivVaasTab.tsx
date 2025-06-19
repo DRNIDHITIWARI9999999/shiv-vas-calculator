@@ -120,7 +120,7 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
                 "तिथिं च द्विगुणी कृत्वा पुनः पञ्च समन्वितम । सप्तभिस्तुहरेद्भागम शेषं शिव वास उच्यते ।।"
               </p>
             </div>
-            <p className="text-indigo-700">
+            <p className="text-indigo-700 font-bold text-center">
               Shiv Vaas is, <strong>{shivVaasData.shivVaasIndex}</strong> - {language === 'sanskrit' ? shivVaasData.location.sanskrit : shivVaasData.location.english}
             </p>
           </div>
