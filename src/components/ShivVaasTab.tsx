@@ -48,7 +48,7 @@ const ShivVaasTab = ({
       sunriseTime: 'सूर्योदय काल',
       tithi: 'तिथि',
       specificTime: 'विशिष्ट समय',
-      shastricStatement: 'एकेन वासः कैलाशे द्वितीये गौरी सन्निधौ ।  तृतीये वृषभारुढ़ः सभायां च चतुष्टये । पंचमे भोजने चैव क्रीड़ायां च रसात्मके ।  श्मशाने सप्तशेषे च शिववासः उदीरितः ।।',
+      shastricStatement: 'शास्त्रीय विवरण',
       formulaTitle: 'देवर्षि नारद जी द्वारा साझा किए गए सूत्र के अनुसार'
     },
     english: {
@@ -57,7 +57,7 @@ const ShivVaasTab = ({
       sunriseTime: 'Sunrise Time',
       tithi: 'Tithi',
       specificTime: 'Specific Time',
-      shastricStatement: 'एकेन वासः कैलाशे द्वितीये गौरी सन्निधौ ।  तृतीये वृषभारुढ़ः सभायां च चतुष्टये । पंचमे भोजने चैव क्रीड़ायां च रसात्मके ।  श्मशाने सप्तशेषे च शिववासः उदीरितः ।।',
+      shastricStatement: 'Scriptural Statement',
       formulaTitle: 'By applying the formula shared by Devarshi Narad Ji'
     }
   };
@@ -121,20 +121,13 @@ const ShivVaasTab = ({
             </p>
           </div>
 
-          <div className={`text-center p-4 rounded-lg ${shivVaasData.shivVaasIndex === 7 ? 'bg-red-100' : 'bg-green-100'}`}>
-            <h3 className={`text-xl font-bold mb-2 ${shivVaasData.shivVaasIndex === 7 ? 'text-red-800' : 'text-green-800'}`}>
-              {language === 'sanskrit' ? shivVaasData.location.sanskrit : shivVaasData.location.english}
-            </h3>
-            <p className={shivVaasData.shivVaasIndex === 7 ? 'text-red-700' : 'text-green-700'}>
-              {language === 'sanskrit' ? shivVaasData.location.significance.sanskrit : shivVaasData.location.significance.english}
-            </p>
-          </div>
+          
 
           {/* Shastric Statement Section - moved here, just below the abode */}
-          <div className="bg-amber-50 p-4 rounded-lg border border-amber-200 text-center">
-            <h4 className="font-semibold mb-2 text-amber-800 flex items-center gap-2 text-center">
+          <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+            <h4 className="font-semibold mb-2 text-amber-800 flex items-center gap-2">
               <span className="text-lg">📜</span>
-              {t.shastricStatement}
+              {t.shastricStatement}:
             </h4>
             <p className="text-amber-700 italic leading-relaxed">
               {currentStatement[language]}
