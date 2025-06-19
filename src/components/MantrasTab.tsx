@@ -10,13 +10,15 @@ const MantrasTab = ({ language }: MantrasTabProps) => {
   const texts = {
     sanskrit: {
       shivaMantras: 'शिव मंत्र',
-      mahamrityunjaya: 'महामृत्युंजy मंत्र',
-      panchakshar: 'शिव पञ्चाक्षर मंत्र'
+      mahamrityunjaya: 'महामृत्युंजय मंत्र',
+      panchakshar: 'शिव पञ्चाक्षर मंत्र',
+      harHarMahadev: 'हर हर महादेव मंत्र'
     },
     english: {
       shivaMantras: 'Shiva Mantras',
       mahamrityunjaya: 'Mahamrityunjaya Mantra',
-      panchakshar: 'Shiva Panchakshar Mantra'
+      panchakshar: 'Shiva Panchakshar Mantra',
+      harHarMahadev: 'Har Har Mahadev Mantra'
     }
   };
 
@@ -52,6 +54,19 @@ const MantrasTab = ({ language }: MantrasTabProps) => {
               {language === 'sanskrit' 
                 ? 'पञ्चाक्षर मंत्र शिव का सबसे पवित्र मंत्र है जो मोक्ष प्रदान करता है।'
                 : 'The Panchakshar Mantra is the most sacred mantra of Shiva that grants liberation.'
+              }
+            </p>
+          </div>
+
+          <div className="p-6 bg-white rounded-lg shadow-sm border-l-4 border-red-400">
+            <h4 className="font-semibold mb-4 text-red-800 text-lg">{t.harHarMahadev}</h4>
+            <p className="text-blue-700 text-2xl font-semibold mb-4">
+              हर हर महादेव 🙏
+            </p>
+            <p className="text-gray-600 text-sm italic">
+              {language === 'sanskrit' 
+                ? 'हर हर महादेव का जाप भगवान शिव की जय-जयकार है और सभी कष्टों का हरण करता है।'
+                : 'Har Har Mahadev is a victory chant for Lord Shiva that removes all sufferings.'
               }
             </p>
           </div>
