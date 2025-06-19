@@ -47,7 +47,7 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       sunriseTime: 'सूर्योदय काल',
       tithi: 'तिथि',
       specificTime: 'विशिष्ट समय',
-      shastricStatement: 'शास्त्रीय विवरण',
+      shastricStatement: 'एकेन वासः कैलाशे द्वितीये गौरी सन्निधौ ।  तृतीये वृषभारुढ़ः सभायां च चतुष्टये । पंचमे भोजने चैव क्रीड़ायां च रसात्मके ।  श्मशाने सप्तशेषे च शिववासः उदीरितः ।।',
       formulaTitle: 'देवर्षि नारद जी द्वारा साझा किए गए सूत्र के अनुसार'
     },
     english: {
@@ -56,7 +56,7 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
       sunriseTime: 'Sunrise Time',
       tithi: 'Tithi',
       specificTime: 'Specific Time',
-      shastricStatement: 'Scriptural Statement',
+      shastricStatement: 'एकेन वासः कैलाशे द्वितीये गौरी सन्निधौ ।  तृतीये वृषभारुढ़ः सभायां च चतुष्टये । पंचमे भोजने चैव क्रीड़ायां च रसात्मके ।  श्मशाने सप्तशेषे च शिववासः उदीरितः ।।',
       formulaTitle: 'By applying the formula shared by Devarshi Narad Ji'
     }
   };
@@ -138,7 +138,7 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
           <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
             <h4 className="font-semibold mb-2 text-amber-800 flex items-center gap-2">
               <span className="text-lg">📜</span>
-              {t.shastricStatement}:
+              {t.shastricStatement}
             </h4>
             <p className="text-amber-700 italic leading-relaxed">
               {currentStatement[language]}
