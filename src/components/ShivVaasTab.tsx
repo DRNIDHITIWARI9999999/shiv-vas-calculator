@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { InfoIcon } from 'lucide-react';
@@ -102,7 +103,7 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
   return (
     <Card className={`${shivVaasData.shivVaasIndex === 7 ? 'bg-gradient-to-r from-red-50 to-orange-50 border-red-200' : 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'}`}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 font-bold text-justify">
           <span className="text-2xl">🔱</span>
           {t.shivVaasDetails}
         </CardTitle>
@@ -126,8 +127,8 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
           </div>
 
           {/* Shastric Statement Section - moved here, just below the formula */}
-          <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
-            <h4 className="font-semibold mb-2 text-amber-800 flex items-center gap-2">
+          <div className="bg-amber-50 p-4 rounded-lg border border-amber-200 text-center">
+            <h4 className="font-semibold mb-2 text-amber-800 flex items-center justify-center gap-2">
               <span className="text-lg">📜</span>
               {t.shastricStatement}
             </h4>
@@ -170,3 +171,4 @@ const ShivVaasTab = ({ shivVaasData, specificTime, useSpecificTime, language }: 
 };
 
 export default ShivVaasTab;
+
