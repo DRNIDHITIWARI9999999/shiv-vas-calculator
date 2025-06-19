@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -263,9 +264,35 @@ const ShivVaasCalculator = () => {
         </Button>
         
         <div className="text-center flex-1">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
-            <span className="text-2xl text-white">🕉️</span>
+          <div className="flex items-center justify-center gap-4 mb-4">
+            {/* Left Symbol - Ganesha */}
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
+                <span className="text-2xl text-white">🐘</span>
+              </div>
+              <p className="text-xs text-blue-600 sanskrit-text leading-tight">
+                ॐ गं गणपतये नमः
+              </p>
+            </div>
+
+            {/* Center Symbol - Om */}
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
+                <span className="text-2xl text-white">🕉️</span>
+              </div>
+            </div>
+
+            {/* Right Symbol - Bhairava */}
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-saffron-500 to-orange-600 rounded-full mb-2 animate-shine">
+                <span className="text-2xl text-white">🔱</span>
+              </div>
+              <p className="text-xs text-blue-600 sanskrit-text leading-tight">
+                काशी भैरवाय नमः
+              </p>
+            </div>
           </div>
+          
           <h1 className="text-2xl md:text-3xl font-bold text-blue-700">{t.title}</h1>
           {t.subtitle && <p className="text-blue-600 text-sm">{t.subtitle}</p>}
         </div>
